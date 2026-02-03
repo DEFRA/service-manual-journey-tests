@@ -12,3 +12,7 @@ allure-report/
 allure-results/
 reports/
 FAILED
+.env
+logs/
+local.log
+browserstack.err

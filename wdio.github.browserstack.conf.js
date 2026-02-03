@@ -1,57 +1,43 @@
 import allure from 'allure-commandline'
+import { browserStackCapabilities } from './wdio.browserstack.capabilities.js'
 
 const oneMinute = 60 * 1000
 
 export const config = {
-  //
-  // ====================
-  // Runner Configuration
-  // ====================
-  // WebdriverIO supports running e2e tests as well as unit and component tests.
   runner: 'local',
-  //
-  // Set a base URL in order to shorten url command calls. If your `url` parameter starts
-  // with `/`, the base url gets prepended, not including the path portion of your baseUrl.
-  // If your `url` parameter starts without a scheme or `/` (like `some/path`), the base url
-  // gets prepended directly.
-  baseUrl: `http://localhost:3000`,
 
-  user: process.env.BROWSERSTACK_USER,
+  baseUrl: 'http://localhost:3000',
+
+  // BrowserStack credentials
+  user: process.env.BROWSERSTACK_USERNAME,
   key: process.env.BROWSERSTACK_KEY,
 
   // Tests to run
   specs: ['./test/specs/**/*.js'],
-  // Tests to exclude
-  exclude: [],
-  maxInstances: 1,
+  // Exclude accessibility tests - WCAG compliance only needs testing on one browser
+  exclude: ['./test/specs/accessibility.e2e.js'],
+  maxInstances: 5,
 
-  commonCapabilities: {
+  // Map capabilities to add build name and project name
+  capabilities: browserStackCapabilities.map((cap) => ({
+    ...cap,
     'bstack:options': {
-      buildName: `service-manual-journey-tests-${process.env.ENVIRONMENT}` // configure as required
+      ...cap['bstack:options'],
+      projectName: 'service-manual-journey-tests',
+      buildName: `service-manual-github-${process.env.GITHUB_RUN_ID || new Date().toISOString().split('T')[0]}`
     }
-  },
-
-  capabilities: [
-    {
-      browserName: 'Chrome', // Set as required
-      'bstack:options': {
-        browserVersion: 'latest',
-        os: 'Windows',
-        osVersion: '11'
-      }
-    }
-  ],
+  })),
 
   services: [
     [
       'browserstack',
       {
-        testObservability: true, // Disable if you do not want to use the browserstack test observer functionality
+        testObservability: true,
         testObservabilityOptions: {
-          user: process.env.BROWSERSTACK_USER,
+          user: process.env.BROWSERSTACK_USERNAME,
           key: process.env.BROWSERSTACK_KEY,
-          projectName: 'cdp-node-env-test-suite', // should match project in browserstack
-          buildName: `service-manual-journey-tests-${process.env.ENVIRONMENT}`
+          projectName: 'service-manual-journey-tests',
+          buildName: `service-manual-github-${process.env.GITHUB_RUN_ID || new Date().toISOString().split('T')[0]}`
         },
         acceptInsecureCerts: true,
         forceLocal: false,
@@ -196,7 +182,11 @@ export const config = {
     { error, result, duration, passed, retries }
   ) {
     if (error) {
-      await browser.takeScreenshot()
+      try {
+        await browser.takeScreenshot()
+      } catch {
+        // Session may have already closed - ignore screenshot errors
+      }
     }
   },
 

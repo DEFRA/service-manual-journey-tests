@@ -7,44 +7,45 @@ class ServiceManualPage extends Page {
     return $('[class*="hero"] h1')
   }
 
+  // Target tiles in the main content area, not navigation links
   get serviceAssessmentsTile() {
-    return $('a[href="/service-assessments"]')
+    return $('main a[href="/service-assessments"]')
   }
 
   get sustainabilityTile() {
-    return $('a[href="/sustainability"]')
+    return $('main a[href="/sustainability"]')
   }
 
   get accessibilityTile() {
-    return $('a[href="/accessibility"]')
+    return $('main a[href="/accessibility"]')
   }
 
   get userResearchTile() {
-    return $('a[href="/user-research"]')
+    return $('main a[href="/user-research"]')
   }
 
   get contentTile() {
-    return $('a[href="/content"]')
+    return $('main a[href="/content"]')
   }
 
   get designTile() {
-    return $('a[href="/design"]')
+    return $('main a[href="/design"]')
   }
 
   get testingAndAssuranceTile() {
-    return $('a[href="/testing-and-assurance"]')
+    return $('main a[href="/testing-and-assurance"]')
   }
 
   get businessAnalysisTile() {
-    return $('a[href="/business-analysis"]')
+    return $('main a[href="/business-analysis"]')
   }
 
   get productAndDeliveryTile() {
-    return $('a[href="/product-and-delivery"]')
+    return $('main a[href="/product-and-delivery"]')
   }
 
   get architectureTile() {
-    return $('a[href="/architecture-and-software-development"]')
+    return $('main a[href="/architecture-and-software-development"]')
   }
 
   open() {

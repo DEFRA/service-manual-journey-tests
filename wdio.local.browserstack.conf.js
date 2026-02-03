@@ -1,37 +1,25 @@
-import fs from 'node:fs'
-import { ProxyAgent, setGlobalDispatcher } from 'undici'
-import { bootstrap } from 'global-agent'
 import { browserStackCapabilities } from './wdio.browserstack.capabilities.js'
-
-/**
- * Enable webdriver.io to use the outbound proxy.
- * This is required for the test suite to be able to talk to BrowserStack.
- */
-if (process.env.HTTP_PROXY) {
-  const dispatcher = new ProxyAgent({
-    uri: process.env.HTTP_PROXY
-  })
-  setGlobalDispatcher(dispatcher)
-  bootstrap()
-  global.GLOBAL_AGENT.HTTP_PROXY = process.env.HTTP_PROXY
-}
 
 const oneMinute = 60 * 1000
 
 export const config = {
   runner: 'local',
 
-  baseUrl: `https://service-manual-ui.${process.env.ENVIRONMENT}.cdp-int.defra.cloud`,
+  // Local development server
+  baseUrl: 'http://localhost:3000',
 
   // BrowserStack credentials
   user: process.env.BROWSERSTACK_USERNAME,
   key: process.env.BROWSERSTACK_KEY,
 
+  hostname: 'hub-cloud.browserstack.com',
+
   // Tests to run
   specs: ['./test/specs/**/*.js'],
   // Exclude accessibility tests - WCAG compliance only needs testing on one browser
   exclude: ['./test/specs/accessibility.e2e.js'],
-  maxInstances: 10,
+
+  maxInstances: 5,
 
   // Map capabilities to add build name and project name
   capabilities: browserStackCapabilities.map((cap) => ({
@@ -39,7 +27,7 @@ export const config = {
     'bstack:options': {
       ...cap['bstack:options'],
       projectName: 'service-manual-journey-tests',
-      buildName: `service-manual-journey-tests-${process.env.ENVIRONMENT}`
+      buildName: `service-manual-local-${new Date().toISOString().split('T')[0]}`
     }
   })),
 
@@ -52,15 +40,11 @@ export const config = {
           user: process.env.BROWSERSTACK_USERNAME,
           key: process.env.BROWSERSTACK_KEY,
           projectName: 'service-manual-journey-tests',
-          buildName: `service-manual-journey-tests-${process.env.ENVIRONMENT}`
+          buildName: `service-manual-local-${new Date().toISOString().split('T')[0]}`
         },
         acceptInsecureCerts: true,
-        forceLocal: false,
-        browserstackLocal: true,
-        opts: {
-          proxyHost: 'localhost',
-          proxyPort: 3128
-        }
+        forceLocal: true,
+        browserstackLocal: true
       }
     ]
   ],
@@ -69,18 +53,20 @@ export const config = {
 
   logLevel: 'info',
 
-  // Number of failures before the test suite bails.
+  logLevels: {
+    webdriver: 'error'
+  },
+
   bail: 0,
   waitforTimeout: 10000,
   waitforInterval: 200,
-  connectionRetryTimeout: 6000,
+  connectionRetryTimeout: 120000,
   connectionRetryCount: 3,
 
   framework: 'mocha',
 
   reporters: [
     [
-      // Spec reporter provides rolling output to the logger so you can see it in-progress
       'spec',
       {
         addConsoleLogs: true,
@@ -89,7 +75,6 @@ export const config = {
       }
     ],
     [
-      // Allure is used to generate the final HTML report
       'allure',
       {
         outputDir: 'allure-results'
@@ -97,14 +82,11 @@ export const config = {
     ]
   ],
 
-  // Options to be passed to Mocha.
-  // See the full list at http://mochajs.org/
   mochaOpts: {
     ui: 'bdd',
-    timeout: oneMinute
+    timeout: oneMinute * 2
   },
 
-  // Hooks
   afterTest: async function (
     test,
     context,
@@ -113,16 +95,13 @@ export const config = {
     if (error) {
       try {
         await browser.takeScreenshot()
+        // Mark session as failed in BrowserStack
+        await browser.execute(
+          'browserstack_executor: {"action": "setSessionStatus", "arguments": {"status":"failed","reason": "Test assertion failed"}}'
+        )
       } catch {
-        // Session may have already closed - ignore screenshot errors
+        // Session may have already closed - ignore errors
       }
-    }
-  },
-
-  onComplete: function (exitCode, config, capabilities, results) {
-    // !Do Not Remove! Required for test status to show correctly in portal.
-    if (results?.failed && results.failed > 0) {
-      fs.writeFileSync('FAILED', JSON.stringify(results))
     }
   }
 }

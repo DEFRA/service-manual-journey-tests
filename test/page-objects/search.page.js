@@ -4,19 +4,21 @@ import { Page } from 'page-objects/page'
 
 class SearchPage extends Page {
   get searchInput() {
-    return $('#defra-search')
+    // Search input is in the header, not main content
+    return $('.defra-header-search__input')
   }
 
   get searchButton() {
-    return $('[class*="search"] button[type="submit"]')
+    return $('.defra-header-search__button')
   }
 
   get resultsCount() {
-    return $('[class*="search-results"] p')
+    // Results count text in main content
+    return $('main .govuk-body-l')
   }
 
   get firstResult() {
-    return $('[class*="search-results"] a')
+    return $('.defra-search-results__item a')
   }
 
   open(query = '') {

@@ -65,12 +65,14 @@ describe('Service manual hub page', () => {
   describe('Navigation from tiles', () => {
     it('Should navigate to accessibility page', async () => {
       await ServiceManualPage.open()
+      await ServiceManualPage.accessibilityTile.waitForClickable()
       await ServiceManualPage.accessibilityTile.click()
       await expect(browser).toHaveUrl(/\/accessibility/)
     })
 
     it('Should navigate to design page', async () => {
       await ServiceManualPage.open()
+      await ServiceManualPage.designTile.waitForClickable()
       await ServiceManualPage.designTile.click()
       await expect(browser).toHaveUrl(/\/design/)
     })

@@ -8,11 +8,11 @@ class HomePage extends Page {
   }
 
   get serviceManualTile() {
-    return $('a[href="/service-manual"]')
+    return $('main a[href="/service-manual"]')
   }
 
   get deliveryGroupsTile() {
-    return $('a[href="/delivery-groups"]')
+    return $('main a[href="/delivery-groups"]')
   }
 
   open() {
