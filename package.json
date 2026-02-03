@@ -21,6 +21,7 @@
     "test:local:debug": "npm run clean && DEBUG=true wdio run wdio.local.conf.js",
     "test:github": "npm run clean && wdio run wdio.github.conf.js",
     "test:github:browserstack": "npm run clean && wdio run wdio.github.browserstack.conf.js",
+    "test:accessibility": "npm run clean && wdio run wdio.local.conf.js --spec test/specs/accessibility.e2e.js",
     "format": "prettier --write 'test/**/*.js' '**/*.{js,md,json,config.js}'",
     "format:check": "prettier --check 'test/**/*.js' '**/*.{js,md,json,config.js}'",
     "git:pre-commit-hook": "npm run format:check && npm run lint",
@@ -28,7 +29,7 @@
     "lint:fix": "eslint . --fix",
     "postinstall": "npm run setup:husky",
     "setup:husky": "node -e \"try { (await import('husky')).default() } catch (e) { if (e.code !== 'ERR_MODULE_NOT_FOUND') throw e }\" --input-type module",
-    "report": "allure generate allure-results --single-file --clean",
+    "report": "allure generate allure-results --single-file --clean && node -e \"import('./allure-accessibility-plugin/allure-accessibility-integration.js').then(m => m.integrateAccessibilityWithAllure())\"",
     "report:publish": "npm run report; ./bin/publish-tests.sh"
   },
   "dependencies": {
@@ -41,6 +42,7 @@
     "@wdio/mocha-framework": "9.9.0",
     "@wdio/spec-reporter": "9.9.0",
     "allure-commandline": "2.32.0",
+    "axe-core": "4.10.3",
     "esm-module-alias": "2.2.1",
     "global-agent": "3.0.0",
     "undici": "7.3.0"
