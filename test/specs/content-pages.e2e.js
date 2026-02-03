@@ -105,7 +105,10 @@ const contentPages = [
 
   // Sustainability sub-pages
   { path: '/sustainability/objectives', titlePattern: /Objectives/i },
-  { path: '/sustainability/process', titlePattern: /Assess risk and write statements/i },
+  {
+    path: '/sustainability/process',
+    titlePattern: /Assess risk and write statements/i
+  },
   { path: '/sustainability/metrics', titlePattern: /Measure sustainability/i },
 
   // Product & Delivery sub-pages
@@ -185,7 +188,10 @@ const contentPages = [
   { path: '/patterns', titlePattern: /Patterns/i },
   { path: '/working-with-defra', titlePattern: /Working with Defra/i },
   { path: '/suggest-content', titlePattern: /Suggest content/i },
-  { path: '/take-part-in-research', titlePattern: /Take part in user research/i }
+  {
+    path: '/take-part-in-research',
+    titlePattern: /Take part in user research/i
+  }
 ]
 
 describe('Content pages', () => {
