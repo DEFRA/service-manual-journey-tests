@@ -51,7 +51,7 @@ const contentPages = [
   },
   {
     path: '/architecture-and-software-development/defra-accessible-maps',
-    titlePattern: /Defra Accessible Maps/i
+    titlePattern: /Defra Interactive Map/i
   },
   {
     path: '/architecture-and-software-development/defra-forms',
@@ -105,8 +105,8 @@ const contentPages = [
 
   // Sustainability sub-pages
   { path: '/sustainability/objectives', titlePattern: /Objectives/i },
-  { path: '/sustainability/process', titlePattern: /Process/i },
-  { path: '/sustainability/metrics', titlePattern: /Metrics/i },
+  { path: '/sustainability/process', titlePattern: /Assess risk and write statements/i },
+  { path: '/sustainability/metrics', titlePattern: /Measure sustainability/i },
 
   // Product & Delivery sub-pages
   { path: '/product-and-delivery/governance', titlePattern: /Governance/i },
@@ -130,11 +130,11 @@ const contentPages = [
   // Delivery Groups - Meet Standards
   {
     path: '/delivery-groups/meet-delivery-standards',
-    titlePattern: /Meet delivery standards/i
+    titlePattern: /Delivery group standards/i
   },
   {
     path: '/delivery-groups/meet-delivery-standards/define-outcomes',
-    titlePattern: /Define outcomes/i
+    titlePattern: /Define and share outcomes/i
   },
   {
     path: '/delivery-groups/meet-delivery-standards/products-and-services',
@@ -152,7 +152,7 @@ const contentPages = [
   // Delivery Groups - Governance
   {
     path: '/delivery-groups/follow-delivery-governance',
-    titlePattern: /Follow delivery governance/i
+    titlePattern: /Delivery group governance/i
   },
   {
     path: '/delivery-groups/follow-delivery-governance/governance-model',
@@ -185,7 +185,7 @@ const contentPages = [
   { path: '/patterns', titlePattern: /Patterns/i },
   { path: '/working-with-defra', titlePattern: /Working with Defra/i },
   { path: '/suggest-content', titlePattern: /Suggest content/i },
-  { path: '/take-part-in-research', titlePattern: /Take part in research/i }
+  { path: '/take-part-in-research', titlePattern: /Take part in user research/i }
 ]
 
 describe('Content pages', () => {
