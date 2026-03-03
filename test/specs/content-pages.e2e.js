@@ -57,11 +57,6 @@ const contentPages = [
     path: '/architecture-and-software-development/defra-forms',
     titlePattern: /Defra Forms/i
   },
-  {
-    path: '/architecture-and-software-development/defra-integration',
-    titlePattern: /Defra Integration/i
-  },
-
   // Accessibility sub-pages
   {
     path: '/accessibility/manage-accessibility',
