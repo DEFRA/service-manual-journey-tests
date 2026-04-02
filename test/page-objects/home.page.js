@@ -1,6 +1,6 @@
 import { $ } from '@wdio/globals'
 
-import { Page } from 'page-objects/page'
+import { Page } from '../page-objects/page'
 
 class HomePage extends Page {
   get heroTitle() {

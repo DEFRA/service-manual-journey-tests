@@ -1,6 +1,6 @@
 import { browser, expect } from '@wdio/globals'
 
-import ServiceManualPage from 'page-objects/service-manual.page'
+import ServiceManualPage from '../page-objects/service-manual.page'
 
 describe('Service manual hub page', () => {
   before(async () => {

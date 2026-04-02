@@ -1,6 +1,6 @@
 import { browser, expect } from '@wdio/globals'
 
-import { Page } from 'page-objects/page'
+import { Page } from '../page-objects/page'
 
 const page = new Page()
 

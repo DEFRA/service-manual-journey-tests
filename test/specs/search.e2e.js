@@ -1,6 +1,6 @@
 import { browser, expect } from '@wdio/globals'
 
-import SearchPage from 'page-objects/search.page'
+import SearchPage from '../page-objects/search.page'
 import { isMobileDevice } from '../helpers/device-detection.js'
 
 describe('Search page', () => {

@@ -1,6 +1,6 @@
 import { browser, expect, $ } from '@wdio/globals'
 
-import HomePage from 'page-objects/home.page'
+import HomePage from '../page-objects/home.page'
 import { isMobileDevice } from '../helpers/device-detection.js'
 
 describe('Site navigation - Desktop', () => {

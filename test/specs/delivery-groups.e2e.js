@@ -1,6 +1,6 @@
 import { browser, expect } from '@wdio/globals'
 
-import DeliveryGroupsPage from 'page-objects/delivery-groups.page'
+import DeliveryGroupsPage from '../page-objects/delivery-groups.page'
 
 describe('Delivery groups page', () => {
   before(async () => {
