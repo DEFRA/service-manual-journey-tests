@@ -191,7 +191,17 @@ export const config = {
     { error, result, duration, passed, retries }
   ) {
     if (error) {
-      await browser.takeScreenshot()
+      try {
+        const screenshot = await browser.takeScreenshot()
+        const allureReporter = (await import('@wdio/allure-reporter')).default
+        allureReporter.addAttachment(
+          `Screenshot - ${test.title}`,
+          Buffer.from(screenshot, 'base64'),
+          'image/png'
+        )
+      } catch (screenshotError) {
+        console.log(`Failed to capture screenshot: ${screenshotError.message}`)
+      }
     }
   },
 
