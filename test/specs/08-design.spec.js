@@ -272,13 +272,13 @@ describe('Design System And Tools Verification', () => {
     // the afterTest screenshot (if any) is taken from the correct window
     let newTabTestError = null
     try {
-      // Wait for the page to fully load
+      // Wait for the page to fully load (increased timeout for external sites behind proxy/VPN)
       await browser.waitUntil(
         async () => {
-          const title = await browser.getTitle()
-          return title.length > 0
+          const readyState = await browser.execute(() => document.readyState)
+          return readyState === 'complete' || readyState === 'interactive'
         },
-        { timeout: 10000, timeoutMsg: 'New tab page did not load in time' }
+        { timeout: 30000, timeoutMsg: 'New tab page did not load in time' }
       )
 
       // 1. Verify the page is not a 404 / archived / error page

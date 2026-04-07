@@ -26,6 +26,6 @@ describe('Delivery groups page', () => {
 
   it('Should navigate to follow delivery governance page', async () => {
     await DeliveryGroupsPage.followGovernanceTile.click()
-    await expect(browser).toHaveUrl(/\/follow-delivery-governance/)
+    await expect(browser).toHaveUrl(/\/delivery-group-governance/)
   })
 })

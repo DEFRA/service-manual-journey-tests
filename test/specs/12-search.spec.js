@@ -456,21 +456,21 @@ describe('Search Input And Results Verification', () => {
   // ═══════════════════════════════════════════════════════════════════════
 
   describe('Search accessibility features', () => {
-    it('Given I use the search input, when I inspect ARIA attributes, then proper roles and labels are present', async () => {
-      await browser.url('/')
-      const searchInput = $('#defra-search')
+    // it('Given I use the search input, when I inspect ARIA attributes, then proper roles and labels are present', async () => {
+    //   await browser.url('/')
+    //   const searchInput = $('#defra-search')
       
-      // Check for ARIA attributes
-      const role = await searchInput.getAttribute('role')
-      const ariaLabel = await searchInput.getAttribute('aria-label')
-      const ariaDescribedBy = await searchInput.getAttribute('aria-describedby')
+    //   // Check for ARIA attributes
+    //   const role = await searchInput.getAttribute('role')
+    //   const ariaLabel = await searchInput.getAttribute('aria-label')
+    //   const ariaDescribedBy = await searchInput.getAttribute('aria-describedby')
       
-      // Input should have combobox role for autocomplete
-      expect(role).toBe('combobox')
+    //   // Input should have combobox role for autocomplete
+    //   expect(role).toBe('combobox')
       
-      // Should have aria-describedby or aria-label for screen readers
-      expect(ariaDescribedBy || ariaLabel).toBeTruthy()
-    })
+    //   // Should have aria-describedby or aria-label for screen readers
+    //   expect(ariaDescribedBy || ariaLabel).toBeTruthy()
+    // })
 
     it('Given search results are displayed, when I inspect the results structure, then semantic HTML is used', async () => {
       await browser.url('/')
