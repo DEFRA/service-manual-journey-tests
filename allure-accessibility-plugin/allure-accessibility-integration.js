@@ -2,7 +2,8 @@ import fs from 'fs'
 import path from 'path'
 
 /**
- * Copies accessibility reports to Allure report directory after Allure generation
+ * Copies accessibility reports to Allure report directory after Allure generation.
+ * Kept for backwards compatibility (local usage).
  */
 export function copyAccessibilityReportsToAllure() {
   const sourceReportsDir = path.join('./reports')
@@ -30,7 +31,35 @@ export function copyAccessibilityReportsToAllure() {
 }
 
 /**
- * Integrates accessibility plugin into the generated Allure report
+ * Reads all accessibility HTML reports from ./reports and returns their
+ * content as a base64-encoded JSON array.
+ * Each entry: { name: 'filename.html', content: '<html>...' }
+ */
+function getEmbeddedReportsData() {
+  const sourceReportsDir = path.join('./reports')
+
+  if (!fs.existsSync(sourceReportsDir)) {
+    return null
+  }
+
+  const files = fs.readdirSync(sourceReportsDir).filter((f) => f.endsWith('.html'))
+
+  if (files.length === 0) {
+    return null
+  }
+
+  const reports = files.map((file) => ({
+    name: file,
+    content: fs.readFileSync(path.join(sourceReportsDir, file), 'utf8')
+  }))
+
+  return Buffer.from(JSON.stringify(reports)).toString('base64')
+}
+
+/**
+ * Integrates accessibility plugin into the generated Allure report.
+ * Embeds the accessibility report HTML content directly into the Allure
+ * index.html so it works on any server without needing separate file access.
  */
 export function integrateAccessibilityPlugin() {
   const allureReportDir = path.join('./allure-report')
@@ -63,10 +92,17 @@ export function integrateAccessibilityPlugin() {
   // Read the Allure index.html
   let indexContent = fs.readFileSync(allureIndexPath, 'utf8')
 
-  // Add accessibility plugin script tag before the closing body tag
-  const accessibilityScript =
+  // Embed accessibility report data as a base64 script variable
+  const embeddedData = getEmbeddedReportsData()
+  const dataScript = embeddedData
+    ? `    <script>window.__ACCESSIBILITY_REPORTS_DATA__ = "${embeddedData}";</script>\n`
+    : `    <script>window.__ACCESSIBILITY_REPORTS_DATA__ = null;</script>\n`
+
+  // Add data + plugin script tags before the closing body tag
+  const injectedScripts =
+    dataScript +
     '    <script src="plugin/accessibility/index.js"></script>\n</body>'
-  indexContent = indexContent.replace('</body>', accessibilityScript)
+  indexContent = indexContent.replace('</body>', injectedScripts)
 
   // Write the modified index.html back
   fs.writeFileSync(allureIndexPath, indexContent)
@@ -79,5 +115,7 @@ export function integrateAccessibilityWithAllure() {
   try {
     copyAccessibilityReportsToAllure()
     integrateAccessibilityPlugin()
-  } catch (error) {}
+  } catch (error) {
+    console.error('[Accessibility Integration] Error:', error.message)
+  }
 }

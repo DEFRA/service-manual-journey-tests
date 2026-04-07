@@ -1,769 +1,909 @@
 /**
  * Site Map Configuration
+ * Complete mapping of all pages in the service-manual-ui application
+ * Auto-generated from repository analysis
  *
- * Complete site map for the service-manual-ui application.
- * Used by the comprehensive broken link test suite.
+ * This configuration file contains:
+ * - All routes with their hierarchical structure
+ * - Parent-child relationships
+ * - Page categories and metadata
+ * - Expected content types
  */
 
-const baseUrl =
-  process.env.BASE_URL ||
-  `https://service-manual-ui.${process.env.ENVIRONMENT || 'dev'}.cdp-int.defra.cloud`
+export const siteConfig = {    
+  baseUrl: process.env.ENVIRONMENT 
+    ? `https://service-manual-ui.${process.env.ENVIRONMENT}.cdp-int.defra.cloud`
+    : 'http://localhost:3000',
+  //  Request configuration
+  requestTimeout: 30000,
+  requestDelay: 100,
+  maxConcurrentRequests: 5,
 
-/**
- * Site-wide configuration
- */
-export const siteConfig = {
-  baseUrl,
-  requestDelay: 300,
+  // Valid HTTP status codes
+  validStatusCodes: [200, 201, 204],
+  redirectStatusCodes: [301, 302, 303, 307, 308],
+  brokenStatusCodes: [400, 401, 403, 404, 405, 500, 502, 503, 504],
+
+  // Patterns to exclude from link checking
   excludePatterns: [
-    /\.pdf$/i,
-    /\.docx?$/i,
-    /\.xlsx?$/i,
-    /\.pptx?$/i,
-    /\.zip$/i,
-    /\.csv$/i,
+    /\.(pdf|zip|doc|docx|xls|xlsx|ppt|pptx|png|jpg|jpeg|gif|svg|ico|css|js|woff|woff2|ttf|eot)$/i,
     /^mailto:/i,
     /^tel:/i,
     /^javascript:/i,
-    /^#/
+    /^#/,
+    /^data:/i
   ],
+
+  // Domains to exclude from link checking (authentication-required or external)
+  // Add domains that require VPN, authentication, or should be skipped
   excludeDomains: [
-    /github\.com/i,
-    /login\.microsoftonline\.com/i,
-    /dev\.azure\.com/i,
-    /portal\.azure\.com/i,
-    /confluence\.defra\.cloud/i,
-    /jira\.defra\.cloud/i
+    /github\.com/i,                    // GitHub (may require auth)
+    /gitlab\.com/i,                    // GitLab (may require auth)
+    /vpn\./i,                          // VPN URLs
+    /intranet\./i,                     // Intranet URLs
+    /confluence\./i,                   // Confluence (usually requires auth)
+    /jira\./i,                         // Jira (usually requires auth)
+    /sharepoint\./i,                   // SharePoint (usually requires auth)
+    /teams\.microsoft\.com/i,          // Microsoft Teams
+    /login\./i,                        // Login pages
+    /auth\./i,                         // Auth pages
+    /sso\./i,                          // SSO pages
+    /portal\.cdp-int\.defra\.cloud/i,  // CDP portal (requires VPN)
+    /defra-digital-team\.slack\.com/i, // Slack (requires auth)
+    /eaflood\.atlassian\.net/i         // Jira (requires auth)
+    // Add more domains as needed, e.g.:
+    // /example\.com/i,
+    // /internal\.company\.com/i
   ]
 }
 
 /**
- * Complete site map keyed by page ID.
- * Each entry defines: id, name, path, parent, children, category.
+ * Complete Site Map
+ * Hierarchical structure of all pages in the application
  */
 export const siteMap = {
-  // ── Root / Top-level pages ──────────────────────────────────────────
-  home: {
-    id: 'home',
-    name: 'Home',
+  // ==========================================
+  // ROOT LEVEL PAGES
+  // ==========================================
+  root: {
     path: '/',
+    name: 'Home',
+    description: 'Main landing page',
+    contentType: 'text/html',
+    children: ['service-manual', 'delivery-groups']
+  },
+
+  // ==========================================
+  // SERVICE MANUAL SECTION
+  // ==========================================
+  'service-manual': {
+    path: '/service-manual',
+    name: 'Service Manual',
+    description: 'Service manual landing page',
     parent: 'root',
+    contentType: 'text/html',
     children: [
-      'service-manual',
-      'delivery-groups',
+      'accessibility-statement',
+      'working-with-defra',
+      'suggest-content',
+      'take-part-in-research',
       'accessibility',
-      'architecture',
+      'architecture-and-software-development',
       'business-analysis',
+      'components',
       'content',
       'design',
+      'patterns',
       'product-and-delivery',
       'security',
       'service-assessments',
       'sustainability',
       'testing-and-assurance',
       'user-research'
-    ],
-    category: 'page'
+    ]
   },
-  cookies: {
-    id: 'cookies',
-    name: 'Cookies',
-    path: '/cookies',
-    parent: 'root',
-    children: [],
-    category: 'utility'
-  },
+
+  // ==========================================
+  // STANDALONE PAGES
+  // ==========================================
   'accessibility-statement': {
-    id: 'accessibility-statement',
-    name: 'Accessibility statement',
     path: '/accessibility-statement',
-    parent: 'root',
-    children: [],
-    category: 'utility'
+    name: 'Accessibility Statement',
+    parent: 'service-manual',
+    contentType: 'text/html',
+    category: 'standalone'
   },
-  components: {
-    id: 'components',
-    name: 'Components',
-    path: '/components',
-    parent: 'root',
-    children: [],
-    category: 'page'
-  },
-  patterns: {
-    id: 'patterns',
-    name: 'Patterns',
-    path: '/patterns',
-    parent: 'root',
-    children: [],
-    category: 'page'
-  },
-  search: {
-    id: 'search',
-    name: 'Search',
-    path: '/search',
-    parent: 'root',
-    children: [],
-    category: 'utility'
-  },
-  'suggest-content': {
-    id: 'suggest-content',
-    name: 'Suggest content',
-    path: '/suggest-content',
-    parent: 'root',
-    children: [],
-    category: 'page'
-  },
-  'take-part-in-research': {
-    id: 'take-part-in-research',
-    name: 'Take part in research',
-    path: '/take-part-in-research',
-    parent: 'root',
-    children: [],
-    category: 'page'
-  },
+
   'working-with-defra': {
-    id: 'working-with-defra',
-    name: 'Working with Defra',
     path: '/working-with-defra',
-    parent: 'root',
-    children: [],
-    category: 'page'
-  },
-  'service-manual': {
-    id: 'service-manual',
-    name: 'Service Manual',
-    path: '/service-manual',
-    parent: 'home',
-    children: [],
-    category: 'section'
-  },
-  'service-standard': {
-    id: 'service-standard',
-    name: 'Service Standard',
-    path: '/service-standard',
-    parent: 'root',
-    children: [],
-    category: 'page'
+    name: 'Working with Defra',
+    parent: 'service-manual',
+    contentType: 'text/html',
+    category: 'standalone'
   },
 
-  // ── Accessibility ───────────────────────────────────────────────────
+  'suggest-content': {
+    path: '/suggest-content',
+    name: 'Suggest Content',
+    parent: 'service-manual',
+    contentType: 'text/html',
+    category: 'standalone'
+  },
+
+  'take-part-in-research': {
+    path: '/take-part-in-research',
+    name: 'Take Part in Research',
+    parent: 'service-manual',
+    contentType: 'text/html',
+    category: 'standalone'
+  },
+
+  components: {
+    path: '/components',
+    name: 'Components',
+    parent: 'service-manual',
+    contentType: 'text/html',
+    category: 'standalone'
+  },
+
+  patterns: {
+    path: '/patterns',
+    name: 'Patterns',
+    parent: 'service-manual',
+    contentType: 'text/html',
+    category: 'standalone'
+  },
+
+  // ==========================================
+  // ACCESSIBILITY SECTION
+  // ==========================================
   accessibility: {
-    id: 'accessibility',
-    name: 'Accessibility',
     path: '/accessibility',
-    parent: 'home',
-    children: ['manage-accessibility', 'test-for-accessibility'],
-    category: 'section'
+    name: 'Accessibility',
+    parent: 'service-manual',
+    contentType: 'text/html',
+    category: 'section',
+    children: [
+      'accessibility/manage-accessibility',
+      'accessibility/test-for-accessibility'
+    ]
   },
-  'manage-accessibility': {
-    id: 'manage-accessibility',
-    name: 'Manage accessibility',
+
+  'accessibility/manage-accessibility': {
     path: '/accessibility/manage-accessibility',
+    name: 'Manage Accessibility',
     parent: 'accessibility',
-    children: [],
+    contentType: 'text/html',
     category: 'page'
   },
-  'test-for-accessibility': {
-    id: 'test-for-accessibility',
-    name: 'Test for accessibility',
+
+  'accessibility/test-for-accessibility': {
     path: '/accessibility/test-for-accessibility',
+    name: 'Test for Accessibility',
     parent: 'accessibility',
-    children: [],
+    contentType: 'text/html',
     category: 'page'
   },
 
-  // ── Architecture and Software Development ───────────────────────────
-  architecture: {
-    id: 'architecture',
-    name: 'Architecture and Software Development',
+  // ==========================================
+  // ARCHITECTURE AND SOFTWARE DEVELOPMENT
+  // ==========================================
+  'architecture-and-software-development': {
     path: '/architecture-and-software-development',
-    parent: 'home',
+    name: 'Architecture and Software Development',
+    parent: 'service-manual',
+    contentType: 'text/html',
+    category: 'section',
     children: [
-      'core-delivery-platform',
-      'defra-accessible-maps',
-      'defra-customer-identity',
-      'defra-forms'
-    ],
-    category: 'section'
+      'architecture-and-software-development/core-delivery-platform',
+      'architecture-and-software-development/defra-customer-identity',
+      'architecture-and-software-development/defra-accessible-maps',
+      'architecture-and-software-development/defra-forms'
+    ]
   },
-  'core-delivery-platform': {
-    id: 'core-delivery-platform',
-    name: 'Core Delivery Platform',
+
+  'architecture-and-software-development/core-delivery-platform': {
     path: '/architecture-and-software-development/core-delivery-platform',
-    parent: 'architecture',
-    children: [],
+    name: 'Core Delivery Platform',
+    parent: 'architecture-and-software-development',
+    contentType: 'text/html',
     category: 'page'
   },
-  'defra-accessible-maps': {
-    id: 'defra-accessible-maps',
-    name: 'Defra Accessible Maps',
-    path: '/architecture-and-software-development/defra-accessible-maps',
-    parent: 'architecture',
-    children: [],
-    category: 'page'
-  },
-  'defra-customer-identity': {
-    id: 'defra-customer-identity',
-    name: 'Defra Customer Identity',
+
+  'architecture-and-software-development/defra-customer-identity': {
     path: '/architecture-and-software-development/defra-customer-identity',
-    parent: 'architecture',
-    children: [],
+    name: 'Defra Customer Identity',
+    parent: 'architecture-and-software-development',
+    contentType: 'text/html',
     category: 'page'
   },
-  'defra-forms': {
-    id: 'defra-forms',
-    name: 'Defra Forms',
+
+  'architecture-and-software-development/defra-accessible-maps': {
+    path: '/architecture-and-software-development/defra-accessible-maps',
+    name: 'Defra Accessible Maps',
+    parent: 'architecture-and-software-development',
+    contentType: 'text/html',
+    category: 'page'
+  },
+
+  'architecture-and-software-development/defra-forms': {
     path: '/architecture-and-software-development/defra-forms',
-    parent: 'architecture',
-    children: [],
+    name: 'Defra Forms',
+    parent: 'architecture-and-software-development',
+    contentType: 'text/html',
     category: 'page'
   },
 
-  // ── Business Analysis ───────────────────────────────────────────────
+  // ==========================================
+  // BUSINESS ANALYSIS
+  // ==========================================
   'business-analysis': {
-    id: 'business-analysis',
-    name: 'Business Analysis',
     path: '/business-analysis',
-    parent: 'home',
-    children: ['business-analysis-ways-of-working'],
-    category: 'section'
+    name: 'Business Analysis',
+    parent: 'service-manual',
+    contentType: 'text/html',
+    category: 'section',
+    children: ['business-analysis/ways-of-working']
   },
-  'business-analysis-ways-of-working': {
-    id: 'business-analysis-ways-of-working',
-    name: 'Ways of working',
+
+  'business-analysis/ways-of-working': {
     path: '/business-analysis/ways-of-working',
+    name: 'Ways of Working',
     parent: 'business-analysis',
-    children: [],
+    contentType: 'text/html',
     category: 'page'
   },
 
-  // ── Content ─────────────────────────────────────────────────────────
+  // ==========================================
+  // CONTENT SECTION
+  // ==========================================
   content: {
-    id: 'content',
-    name: 'Content',
     path: '/content',
-    parent: 'home',
+    name: 'Content',
+    parent: 'service-manual',
+    contentType: 'text/html',
+    category: 'section',
     children: [
-      'accessibility-tools',
-      'accessible-spreadsheets',
-      'colour-contrast',
-      'designing-content-types',
-      'inclusive-clear-language',
-      'legal-content',
-      'sharing-designs',
-      'welsh-language-translation',
-      'working-in-alpha',
-      'working-in-beta',
-      'working-in-discovery',
-      'working-in-live'
-    ],
-    category: 'section'
+      'content/inclusive-clear-language',
+      'content/designing-different-content-types',
+      'content/sharing-designs-recording-decisions',
+      'content/working-in-discovery',
+      'content/working-in-alpha',
+      'content/working-in-beta',
+      'content/working-in-live',
+      'content/legal-content',
+      'content/welsh-language-translation',
+      'content/colour-contrast',
+      'content/accessible-spreadsheets',
+      'content/accessibility-tools'
+    ]
   },
-  'accessibility-tools': {
-    id: 'accessibility-tools',
-    name: 'Accessibility tools',
-    path: '/content/accessibility-tools',
-    parent: 'content',
-    children: [],
-    category: 'page'
-  },
-  'accessible-spreadsheets': {
-    id: 'accessible-spreadsheets',
-    name: 'Accessible spreadsheets',
-    path: '/content/accessible-spreadsheets',
-    parent: 'content',
-    children: [],
-    category: 'page'
-  },
-  'colour-contrast': {
-    id: 'colour-contrast',
-    name: 'Colour contrast',
-    path: '/content/colour-contrast',
-    parent: 'content',
-    children: [],
-    category: 'page'
-  },
-  'designing-content-types': {
-    id: 'designing-content-types',
-    name: 'Designing different content types',
-    path: '/content/designing-different-content-types',
-    parent: 'content',
-    children: [],
-    category: 'page'
-  },
-  'inclusive-clear-language': {
-    id: 'inclusive-clear-language',
-    name: 'Inclusive clear language',
+
+  'content/inclusive-clear-language': {
     path: '/content/inclusive-clear-language',
+    name: 'Inclusive and Clear Language',
     parent: 'content',
-    children: [],
+    contentType: 'text/html',
     category: 'page'
   },
-  'legal-content': {
-    id: 'legal-content',
-    name: 'Legal content',
-    path: '/content/legal-content',
+
+  'content/designing-different-content-types': {
+    path: '/content/designing-different-content-types',
+    name: 'Designing Different Content Types',
     parent: 'content',
-    children: [],
+    contentType: 'text/html',
     category: 'page'
   },
-  'sharing-designs': {
-    id: 'sharing-designs',
-    name: 'Sharing designs, recording decisions',
+
+  'content/sharing-designs-recording-decisions': {
     path: '/content/sharing-designs-recording-decisions',
+    name: 'Sharing Designs and Recording Decisions',
     parent: 'content',
-    children: [],
+    contentType: 'text/html',
     category: 'page'
   },
-  'welsh-language-translation': {
-    id: 'welsh-language-translation',
-    name: 'Welsh language translation',
-    path: '/content/welsh-language-translation',
-    parent: 'content',
-    children: [],
-    category: 'page'
-  },
-  'working-in-alpha': {
-    id: 'working-in-alpha',
-    name: 'Working in alpha',
-    path: '/content/working-in-alpha',
-    parent: 'content',
-    children: [],
-    category: 'page'
-  },
-  'working-in-beta': {
-    id: 'working-in-beta',
-    name: 'Working in beta',
-    path: '/content/working-in-beta',
-    parent: 'content',
-    children: [],
-    category: 'page'
-  },
-  'working-in-discovery': {
-    id: 'working-in-discovery',
-    name: 'Working in discovery',
+
+  'content/working-in-discovery': {
     path: '/content/working-in-discovery',
+    name: 'Working in Discovery',
     parent: 'content',
-    children: [],
+    contentType: 'text/html',
     category: 'page'
   },
-  'working-in-live': {
-    id: 'working-in-live',
-    name: 'Working in live',
+
+  'content/working-in-alpha': {
+    path: '/content/working-in-alpha',
+    name: 'Working in Alpha',
+    parent: 'content',
+    contentType: 'text/html',
+    category: 'page'
+  },
+
+  'content/working-in-beta': {
+    path: '/content/working-in-beta',
+    name: 'Working in Beta',
+    parent: 'content',
+    contentType: 'text/html',
+    category: 'page'
+  },
+
+  'content/working-in-live': {
     path: '/content/working-in-live',
+    name: 'Working in Live',
     parent: 'content',
-    children: [],
+    contentType: 'text/html',
     category: 'page'
   },
 
-  // ── Delivery Groups ─────────────────────────────────────────────────
-  'delivery-groups': {
-    id: 'delivery-groups',
-    name: 'Delivery Groups',
-    path: '/delivery-groups',
-    parent: 'home',
-    children: ['follow-delivery-governance', 'meet-delivery-standards'],
-    category: 'section'
-  },
-  'follow-delivery-governance': {
-    id: 'follow-delivery-governance',
-    name: 'Follow delivery governance',
-    path: '/delivery-groups/follow-delivery-governance',
-    parent: 'delivery-groups',
-    children: ['assurance', 'governance-model'],
-    category: 'section'
-  },
-  assurance: {
-    id: 'assurance',
-    name: 'Assurance',
-    path: '/delivery-groups/follow-delivery-governance/assurance',
-    parent: 'follow-delivery-governance',
-    children: [
-      'operational-service-readiness',
-      'other-assurance-types',
-      'assurance-service-assessments',
-      'spend-control'
-    ],
-    category: 'section'
-  },
-  'operational-service-readiness': {
-    id: 'operational-service-readiness',
-    name: 'Operational service readiness',
-    path: '/delivery-groups/follow-delivery-governance/assurance/operational-service-readiness',
-    parent: 'assurance',
-    children: [],
-    category: 'page'
-  },
-  'other-assurance-types': {
-    id: 'other-assurance-types',
-    name: 'Other assurance types',
-    path: '/delivery-groups/follow-delivery-governance/assurance/other-assurance-types',
-    parent: 'assurance',
-    children: [],
-    category: 'page'
-  },
-  'assurance-service-assessments': {
-    id: 'assurance-service-assessments',
-    name: 'Service assessments',
-    path: '/delivery-groups/follow-delivery-governance/assurance/service-assessments',
-    parent: 'assurance',
-    children: [],
-    category: 'page'
-  },
-  'spend-control': {
-    id: 'spend-control',
-    name: 'Spend control',
-    path: '/delivery-groups/follow-delivery-governance/assurance/spend-control',
-    parent: 'assurance',
-    children: [],
-    category: 'page'
-  },
-  'governance-model': {
-    id: 'governance-model',
-    name: 'Governance model',
-    path: '/delivery-groups/follow-delivery-governance/governance-model',
-    parent: 'follow-delivery-governance',
-    children: [],
-    category: 'page'
-  },
-  'meet-delivery-standards': {
-    id: 'meet-delivery-standards',
-    name: 'Meet delivery standards',
-    path: '/delivery-groups/meet-delivery-standards',
-    parent: 'delivery-groups',
-    children: [
-      'define-outcomes',
-      'products-and-services',
-      'roadmap-for-change',
-      'success-measures'
-    ],
-    category: 'section'
-  },
-  'define-outcomes': {
-    id: 'define-outcomes',
-    name: 'Define outcomes',
-    path: '/delivery-groups/meet-delivery-standards/define-outcomes',
-    parent: 'meet-delivery-standards',
-    children: [],
-    category: 'page'
-  },
-  'products-and-services': {
-    id: 'products-and-services',
-    name: 'Products and services',
-    path: '/delivery-groups/meet-delivery-standards/products-and-services',
-    parent: 'meet-delivery-standards',
-    children: [],
-    category: 'page'
-  },
-  'roadmap-for-change': {
-    id: 'roadmap-for-change',
-    name: 'Roadmap for change',
-    path: '/delivery-groups/meet-delivery-standards/roadmap-for-change',
-    parent: 'meet-delivery-standards',
-    children: [],
-    category: 'page'
-  },
-  'success-measures': {
-    id: 'success-measures',
-    name: 'Success measures',
-    path: '/delivery-groups/meet-delivery-standards/success-measures',
-    parent: 'meet-delivery-standards',
-    children: [],
+  'content/legal-content': {
+    path: '/content/legal-content',
+    name: 'Legal Content',
+    parent: 'content',
+    contentType: 'text/html',
     category: 'page'
   },
 
-  // ── Design ──────────────────────────────────────────────────────────
+  'content/welsh-language-translation': {
+    path: '/content/welsh-language-translation',
+    name: 'Welsh Language Translation',
+    parent: 'content',
+    contentType: 'text/html',
+    category: 'page'
+  },
+
+  'content/colour-contrast': {
+    path: '/content/colour-contrast',
+    name: 'Colour Contrast',
+    parent: 'content',
+    contentType: 'text/html',
+    category: 'page'
+  },
+
+  'content/accessible-spreadsheets': {
+    path: '/content/accessible-spreadsheets',
+    name: 'Accessible Spreadsheets',
+    parent: 'content',
+    contentType: 'text/html',
+    category: 'page'
+  },
+
+  'content/accessibility-tools': {
+    path: '/content/accessibility-tools',
+    name: 'Accessibility Tools',
+    parent: 'content',
+    contentType: 'text/html',
+    category: 'page'
+  },
+
+  // ==========================================
+  // DESIGN SECTION
+  // ==========================================
   design: {
-    id: 'design',
-    name: 'Design',
     path: '/design',
-    parent: 'home',
+    name: 'Design',
+    parent: 'service-manual',
+    contentType: 'text/html',
+    category: 'section',
     children: [
-      'design-branding',
-      'design-components-patterns',
-      'design-cookies',
-      'design-data-visualisation',
-      'design-prototyping',
-      'design-tools'
-    ],
-    category: 'section'
+      'design/branding',
+      'design/cookies',
+      'design/data-visualisation',
+      'design/prototyping',
+      'design/tools',
+      'design/components-and-patterns'
+    ]
   },
-  'design-branding': {
-    id: 'design-branding',
-    name: 'Branding',
+
+  'design/branding': {
     path: '/design/branding',
+    name: 'Branding',
     parent: 'design',
-    children: [],
+    contentType: 'text/html',
     category: 'page'
   },
-  'design-components-patterns': {
-    id: 'design-components-patterns',
-    name: 'Components and patterns',
-    path: '/design/components-and-patterns',
-    parent: 'design',
-    children: [],
-    category: 'page'
-  },
-  'design-cookies': {
-    id: 'design-cookies',
-    name: 'Cookies',
+
+  'design/cookies': {
     path: '/design/cookies',
+    name: 'Cookies (Design)',
     parent: 'design',
-    children: [],
+    contentType: 'text/html',
     category: 'page'
   },
-  'design-data-visualisation': {
-    id: 'design-data-visualisation',
-    name: 'Data visualisation',
+
+  'design/data-visualisation': {
     path: '/design/data-visualisation',
+    name: 'Data Visualisation',
     parent: 'design',
-    children: [],
+    contentType: 'text/html',
     category: 'page'
   },
-  'design-prototyping': {
-    id: 'design-prototyping',
-    name: 'Prototyping',
+
+  'design/prototyping': {
     path: '/design/prototyping',
+    name: 'Prototyping',
     parent: 'design',
-    children: [],
+    contentType: 'text/html',
     category: 'page'
   },
-  'design-tools': {
-    id: 'design-tools',
-    name: 'Tools',
+
+  'design/tools': {
     path: '/design/tools',
+    name: 'Design Tools',
     parent: 'design',
-    children: [],
+    contentType: 'text/html',
     category: 'page'
   },
 
-  // ── Product and Delivery ────────────────────────────────────────────
+  'design/components-and-patterns': {
+    path: '/design/components-and-patterns',
+    name: 'Components and Patterns',
+    parent: 'design',
+    contentType: 'text/html',
+    category: 'page'
+  },
+
+  // ==========================================
+  // PRODUCT AND DELIVERY
+  // ==========================================
   'product-and-delivery': {
-    id: 'product-and-delivery',
-    name: 'Product and Delivery',
     path: '/product-and-delivery',
-    parent: 'home',
-    children: ['product-delivery-governance', 'product-delivery-tools'],
-    category: 'section'
+    name: 'Product and Delivery',
+    parent: 'service-manual',
+    contentType: 'text/html',
+    category: 'section',
+    children: [
+      'product-and-delivery/governance',
+      'product-and-delivery/tools-and-access'
+    ]
   },
-  'product-delivery-governance': {
-    id: 'product-delivery-governance',
-    name: 'Governance',
+
+  'product-and-delivery/governance': {
     path: '/product-and-delivery/governance',
+    name: 'Governance',
     parent: 'product-and-delivery',
-    children: [],
+    contentType: 'text/html',
     category: 'page'
   },
-  'product-delivery-tools': {
-    id: 'product-delivery-tools',
-    name: 'Tools and access',
+
+  'product-and-delivery/tools-and-access': {
     path: '/product-and-delivery/tools-and-access',
+    name: 'Tools and Access',
     parent: 'product-and-delivery',
-    children: [],
+    contentType: 'text/html',
     category: 'page'
   },
 
-  // ── Security ────────────────────────────────────────────────────────
+  // ==========================================
+  // SECURITY
+  // ==========================================
   security: {
-    id: 'security',
-    name: 'Security',
     path: '/security',
-    parent: 'home',
-    children: ['security-common-tasks'],
-    category: 'section'
+    name: 'Security',
+    parent: 'service-manual',
+    contentType: 'text/html',
+    category: 'section',
+    children: ['security/common-tasks']
   },
-  'security-common-tasks': {
-    id: 'security-common-tasks',
-    name: 'Common tasks',
+
+  'security/common-tasks': {
     path: '/security/common-tasks',
+    name: 'Common Tasks',
     parent: 'security',
-    children: [],
+    contentType: 'text/html',
     category: 'page'
   },
 
-  // ── Service Assessments ─────────────────────────────────────────────
+  // ==========================================
+  // SERVICE ASSESSMENTS
+  // ==========================================
   'service-assessments': {
-    id: 'service-assessments',
-    name: 'Service Assessments',
     path: '/service-assessments',
-    parent: 'home',
+    name: 'Service Assessments',
+    parent: 'service-manual',
+    contentType: 'text/html',
+    category: 'section',
     children: [
-      'assessment-questions',
-      'become-an-assessor',
-      'book-an-assessment',
-      'gov-uk-exemptions'
-    ],
-    category: 'section'
+      'service-assessments/book-an-assessment',
+      'service-assessments/become-an-assessor',
+      'service-assessments/gov-uk-exemptions',
+      'service-assessments/assessment-questions'
+    ]
   },
-  'assessment-questions': {
-    id: 'assessment-questions',
-    name: 'Assessment questions',
-    path: '/service-assessments/assessment-questions',
-    parent: 'service-assessments',
-    children: [],
-    category: 'page'
-  },
-  'become-an-assessor': {
-    id: 'become-an-assessor',
-    name: 'Become an assessor',
-    path: '/service-assessments/become-an-assessor',
-    parent: 'service-assessments',
-    children: [],
-    category: 'page'
-  },
-  'book-an-assessment': {
-    id: 'book-an-assessment',
-    name: 'Book an assessment',
+
+  'service-assessments/book-an-assessment': {
     path: '/service-assessments/book-an-assessment',
+    name: 'Book an Assessment',
     parent: 'service-assessments',
-    children: [],
+    contentType: 'text/html',
     category: 'page'
   },
-  'gov-uk-exemptions': {
-    id: 'gov-uk-exemptions',
-    name: 'GOV.UK exemptions',
+
+  'service-assessments/become-an-assessor': {
+    path: '/service-assessments/become-an-assessor',
+    name: 'Become an Assessor',
+    parent: 'service-assessments',
+    contentType: 'text/html',
+    category: 'page'
+  },
+
+  'service-assessments/gov-uk-exemptions': {
     path: '/service-assessments/gov-uk-exemptions',
+    name: 'GOV.UK Exemptions',
     parent: 'service-assessments',
-    children: [],
+    contentType: 'text/html',
     category: 'page'
   },
 
-  // ── Sustainability ──────────────────────────────────────────────────
+  'service-assessments/assessment-questions': {
+    path: '/service-assessments/assessment-questions',
+    name: 'Assessment Questions',
+    parent: 'service-assessments',
+    contentType: 'text/html',
+    category: 'page'
+  },
+
+  // ==========================================
+  // SUSTAINABILITY
+  // ==========================================
   sustainability: {
-    id: 'sustainability',
-    name: 'Sustainability',
     path: '/sustainability',
-    parent: 'home',
+    name: 'Sustainability',
+    parent: 'service-manual',
+    contentType: 'text/html',
+    category: 'section',
     children: [
-      'sustainability-metrics',
-      'sustainability-objectives',
-      'sustainability-process'
-    ],
-    category: 'section'
+      'sustainability/process',
+      'sustainability/objectives',
+      'sustainability/metrics'
+    ]
   },
-  'sustainability-metrics': {
-    id: 'sustainability-metrics',
-    name: 'Metrics',
-    path: '/sustainability/metrics',
-    parent: 'sustainability',
-    children: [],
-    category: 'page'
-  },
-  'sustainability-objectives': {
-    id: 'sustainability-objectives',
-    name: 'Objectives',
-    path: '/sustainability/objectives',
-    parent: 'sustainability',
-    children: [],
-    category: 'page'
-  },
-  'sustainability-process': {
-    id: 'sustainability-process',
-    name: 'Process',
+
+  'sustainability/process': {
     path: '/sustainability/process',
+    name: 'Process',
     parent: 'sustainability',
-    children: [],
+    contentType: 'text/html',
     category: 'page'
   },
 
-  // ── Testing and Assurance ───────────────────────────────────────────
+  'sustainability/objectives': {
+    path: '/sustainability/objectives',
+    name: 'Objectives',
+    parent: 'sustainability',
+    contentType: 'text/html',
+    category: 'page'
+  },
+
+  'sustainability/metrics': {
+    path: '/sustainability/metrics',
+    name: 'Metrics',
+    parent: 'sustainability',
+    contentType: 'text/html',
+    category: 'page'
+  },
+
+  // ==========================================
+  // TESTING AND ASSURANCE
+  // ==========================================
   'testing-and-assurance': {
-    id: 'testing-and-assurance',
-    name: 'Testing and Assurance',
     path: '/testing-and-assurance',
-    parent: 'home',
-    children: ['testing-recommended-approach'],
-    category: 'section'
+    name: 'Testing and Assurance',
+    parent: 'service-manual',
+    contentType: 'text/html',
+    category: 'section',
+    children: ['testing-and-assurance/recommended-approach']
   },
-  'testing-recommended-approach': {
-    id: 'testing-recommended-approach',
-    name: 'Recommended approach',
+
+  'testing-and-assurance/recommended-approach': {
     path: '/testing-and-assurance/recommended-approach',
+    name: 'Recommended Approach',
     parent: 'testing-and-assurance',
-    children: [],
+    contentType: 'text/html',
     category: 'page'
   },
 
-  // ── User Research ───────────────────────────────────────────────────
+  // ==========================================
+  // USER RESEARCH
+  // ==========================================
   'user-research': {
-    id: 'user-research',
-    name: 'User Research',
     path: '/user-research',
-    parent: 'home',
+    name: 'User Research',
+    parent: 'service-manual',
+    contentType: 'text/html',
+    category: 'section',
     children: [
-      'user-research-recruiting',
-      'user-research-scoping',
-      'user-research-standards',
-      'user-research-tools'
-    ],
-    category: 'section'
+      'user-research/scoping-research',
+      'user-research/recruiting-participants',
+      'user-research/standards-and-guidance',
+      'user-research/tools'
+    ]
   },
-  'user-research-recruiting': {
-    id: 'user-research-recruiting',
-    name: 'Recruiting participants',
-    path: '/user-research/recruiting-participants',
-    parent: 'user-research',
-    children: [],
-    category: 'page'
-  },
-  'user-research-scoping': {
-    id: 'user-research-scoping',
-    name: 'Scoping research',
+
+  'user-research/scoping-research': {
     path: '/user-research/scoping-research',
+    name: 'Scoping Research',
     parent: 'user-research',
-    children: [],
+    contentType: 'text/html',
     category: 'page'
   },
-  'user-research-standards': {
-    id: 'user-research-standards',
-    name: 'Standards and guidance',
+
+  'user-research/recruiting-participants': {
+    path: '/user-research/recruiting-participants',
+    name: 'Recruiting Participants',
+    parent: 'user-research',
+    contentType: 'text/html',
+    category: 'page'
+  },
+
+  'user-research/standards-and-guidance': {
     path: '/user-research/standards-and-guidance',
+    name: 'Standards and Guidance',
     parent: 'user-research',
-    children: [],
+    contentType: 'text/html',
     category: 'page'
   },
-  'user-research-tools': {
-    id: 'user-research-tools',
-    name: 'Tools',
+
+  'user-research/tools': {
     path: '/user-research/tools',
+    name: 'User Research Tools',
     parent: 'user-research',
-    children: [],
+    contentType: 'text/html',
     category: 'page'
+  },
+
+  // ==========================================
+  // DELIVERY GROUPS SECTION
+  // ==========================================
+  'delivery-groups': {
+    path: '/delivery-groups',
+    name: 'Delivery Groups',
+    parent: 'root',
+    contentType: 'text/html',
+    category: 'section',
+    children: [
+      'delivery-groups/meet-delivery-standards',
+      'delivery-groups/follow-delivery-governance'
+    ]
+  },
+
+  'delivery-groups/meet-delivery-standards': {
+    path: '/delivery-groups/meet-delivery-standards',
+    name: 'Meet Delivery Standards',
+    parent: 'delivery-groups',
+    contentType: 'text/html',
+    category: 'section',
+    children: [
+      'delivery-groups/meet-delivery-standards/define-outcomes',
+      'delivery-groups/meet-delivery-standards/products-and-services',
+      'delivery-groups/meet-delivery-standards/roadmap-for-change',
+      'delivery-groups/meet-delivery-standards/success-measures'
+    ]
+  },
+
+  'delivery-groups/meet-delivery-standards/define-outcomes': {
+    path: '/delivery-groups/meet-delivery-standards/define-outcomes',
+    name: 'Define Outcomes',
+    parent: 'delivery-groups/meet-delivery-standards',
+    contentType: 'text/html',
+    category: 'page'
+  },
+
+  'delivery-groups/meet-delivery-standards/products-and-services': {
+    path: '/delivery-groups/meet-delivery-standards/products-and-services',
+    name: 'Products and Services',
+    parent: 'delivery-groups/meet-delivery-standards',
+    contentType: 'text/html',
+    category: 'page'
+  },
+
+  'delivery-groups/meet-delivery-standards/roadmap-for-change': {
+    path: '/delivery-groups/meet-delivery-standards/roadmap-for-change',
+    name: 'Roadmap for Change',
+    parent: 'delivery-groups/meet-delivery-standards',
+    contentType: 'text/html',
+    category: 'page'
+  },
+
+  'delivery-groups/meet-delivery-standards/success-measures': {
+    path: '/delivery-groups/meet-delivery-standards/success-measures',
+    name: 'Success Measures',
+    parent: 'delivery-groups/meet-delivery-standards',
+    contentType: 'text/html',
+    category: 'page'
+  },
+
+  'delivery-groups/follow-delivery-governance': {
+    path: '/delivery-groups/follow-delivery-governance',
+    name: 'Follow Delivery Governance',
+    parent: 'delivery-groups',
+    contentType: 'text/html',
+    category: 'section',
+    children: [
+      'delivery-groups/follow-delivery-governance/governance-model',
+      'delivery-groups/follow-delivery-governance/assurance'
+    ]
+  },
+
+  'delivery-groups/follow-delivery-governance/governance-model': {
+    path: '/delivery-groups/follow-delivery-governance/governance-model',
+    name: 'Governance Model',
+    parent: 'delivery-groups/follow-delivery-governance',
+    contentType: 'text/html',
+    category: 'page'
+  },
+
+  'delivery-groups/follow-delivery-governance/assurance': {
+    path: '/delivery-groups/follow-delivery-governance/assurance',
+    name: 'Assurance',
+    parent: 'delivery-groups/follow-delivery-governance',
+    contentType: 'text/html',
+    category: 'section',
+    children: [
+      'delivery-groups/follow-delivery-governance/assurance/spend-control',
+      'delivery-groups/follow-delivery-governance/assurance/service-assessments',
+      'delivery-groups/follow-delivery-governance/assurance/operational-service-readiness',
+      'delivery-groups/follow-delivery-governance/assurance/other-assurance-types'
+    ]
+  },
+
+  'delivery-groups/follow-delivery-governance/assurance/spend-control': {
+    path: '/delivery-groups/follow-delivery-governance/assurance/spend-control',
+    name: 'Spend Control',
+    parent: 'delivery-groups/follow-delivery-governance/assurance',
+    contentType: 'text/html',
+    category: 'page'
+  },
+
+  'delivery-groups/follow-delivery-governance/assurance/service-assessments': {
+    path: '/delivery-groups/follow-delivery-governance/assurance/service-assessments',
+    name: 'Service Assessments (Assurance)',
+    parent: 'delivery-groups/follow-delivery-governance/assurance',
+    contentType: 'text/html',
+    category: 'page'
+  },
+
+  'delivery-groups/follow-delivery-governance/assurance/operational-service-readiness':
+    {
+      path: '/delivery-groups/follow-delivery-governance/assurance/operational-service-readiness',
+      name: 'Operational Service Readiness',
+      parent: 'delivery-groups/follow-delivery-governance/assurance',
+      contentType: 'text/html',
+      category: 'page'
+    },
+
+  'delivery-groups/follow-delivery-governance/assurance/other-assurance-types':
+    {
+      path: '/delivery-groups/follow-delivery-governance/assurance/other-assurance-types',
+      name: 'Other Assurance Types',
+      parent: 'delivery-groups/follow-delivery-governance/assurance',
+      contentType: 'text/html',
+      category: 'page'
+    },
+
+  // ==========================================
+  // UTILITY PAGES
+  // ==========================================
+  cookies: {
+    path: '/cookies',
+    name: 'Cookies',
+    parent: 'root',
+    contentType: 'text/html',
+    category: 'utility'
+  },
+
+  search: {
+    path: '/search',
+    name: 'Search',
+    parent: 'root',
+    contentType: 'text/html',
+    category: 'utility'
   }
 }
 
 /**
- * Get all pages as a flat array
- * @returns {Array<{id: string, name: string, path: string, parent: string, children: string[], category: string}>}
+ * Get all page paths as a flat array
  */
-export function getAllPages() {
-  return Object.values(siteMap)
+export function getAllPagePaths() {
+  return Object.values(siteMap).map((page) => page.path)
 }
 
 /**
- * Get site statistics
- * @returns {{totalPages: number, maxDepth: number, categories: Record<string, number>}}
+ * Get all pages with full metadata
+ */
+export function getAllPages() {
+  return Object.entries(siteMap).map(([key, page]) => ({
+    id: key,
+    ...page
+  }))
+}
+
+/**
+ * Get pages by category
+ */
+export function getPagesByCategory(category) {
+  return Object.entries(siteMap)
+    .filter(([_, page]) => page.category === category)
+    .map(([key, page]) => ({ id: key, ...page }))
+}
+
+/**
+ * Get child pages of a parent
+ */
+export function getChildPages(parentId) {
+  const parent = siteMap[parentId]
+  if (!parent?.children) return []
+
+  return parent.children.map((childId) => ({
+    id: childId,
+    ...siteMap[childId]
+  }))
+}
+
+/**
+ * Get page hierarchy (breadcrumb path)
+ */
+export function getPageHierarchy(pageId) {
+  const hierarchy = []
+  let currentId = pageId
+
+  while (currentId && siteMap[currentId]) {
+    hierarchy.unshift({
+      id: currentId,
+      ...siteMap[currentId]
+    })
+    currentId = siteMap[currentId].parent
+  }
+
+  return hierarchy
+}
+
+/**
+ * Get page depth level
+ */
+export function getPageDepth(pageId) {
+  let depth = 0
+  let currentId = pageId
+
+  while (currentId && siteMap[currentId]?.parent) {
+    depth++
+    currentId = siteMap[currentId].parent
+  }
+
+  return depth
+}
+
+/**
+ * Statistics about the site
  */
 export function getSiteStats() {
-  const allPages = getAllPages()
-
+  const pages = getAllPages()
   const categories = {}
   let maxDepth = 0
 
-  for (const page of allPages) {
-    // Count categories
-    categories[page.category] = (categories[page.category] || 0) + 1
+  pages.forEach((page) => {
+    const category = page.category || 'unknown'
+    categories[category] = (categories[category] || 0) + 1
 
-    // Calculate depth from path
-    const depth = (page.path.match(/\//g) || []).length
-    if (depth > maxDepth) {
-      maxDepth = depth
-    }
-  }
+    const depth = getPageDepth(page.id)
+    if (depth > maxDepth) maxDepth = depth
+  })
 
   return {
-    totalPages: allPages.length,
+    totalPages: pages.length,
+    categories,
     maxDepth,
-    categories
+    pagesWithChildren: pages.filter((p) => p.children?.length > 0).length
   }
+}
+
+export default {
+  siteConfig,
+  siteMap,
+  getAllPagePaths,
+  getAllPages,
+  getPagesByCategory,
+  getChildPages,
+  getPageHierarchy,
+  getPageDepth,
+  getSiteStats
 }

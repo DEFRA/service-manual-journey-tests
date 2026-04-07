@@ -25,7 +25,26 @@ describe('Delivery groups page', () => {
   })
 
   it('Should navigate to follow delivery governance page', async () => {
-    await DeliveryGroupsPage.followGovernanceTile.click()
-    await expect(browser).toHaveUrl(/\/delivery-group-governance/)
+    // await DeliveryGroupsPage.followGovernanceTile.click()
+    // await expect(browser).toHaveUrl(/\/delivery-group-governance/)
+  const originalWindow = await browser.getWindowHandle()
+  
+  await DeliveryGroupsPage.followGovernanceTile.click()
+
+  await browser.waitUntil(
+    async () => (await browser.getWindowHandles()).length > 1,
+    {
+      timeout: 5000,
+      timeoutMsg: 'New tab did not open'
+    }
+  )
+
+  const allWindows = await browser.getWindowHandles()
+  const newWindow = allWindows.find(handle => handle !== originalWindow)
+
+  await browser.switchToWindow(newWindow)
+  await expect(browser).toHaveUrl(/\/delivery-group-governance/)
+  
+
   })
 })
