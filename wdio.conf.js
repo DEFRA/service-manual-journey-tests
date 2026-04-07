@@ -21,7 +21,7 @@ export const config = {
   port: process.env.CHROMEDRIVER_PORT || 4444,
 
   // Tests to run
-  specs: ['./test/specs/**/*.js'],
+  specs: ['./test/specs/**/*.e2e.js', './test/specs/**/*.test.js', './test/specs/**/*.spec.js'],
   // Tests to exclude
   exclude: [],
   maxInstances: 1,
@@ -231,11 +231,17 @@ export const config = {
    * @param {Array.<Object>} capabilities list of capabilities details
    * @param {<Object>} results object containing test results
    */
-  onComplete: function (exitCode, config, capabilities, results) {
+  onComplete: async function (exitCode, config, capabilities, results) {
     // !Do Not Remove! Required for test status to show correctly in portal.
     if (results?.failed && results.failed > 0) {
       fs.writeFileSync('FAILED', JSON.stringify(results))
     }
+
+    // Integrate accessibility HTML reports into the Allure report
+    const { integrateAccessibilityWithAllure } = await import(
+      './allure-accessibility-plugin/allure-accessibility-integration.js'
+    )
+    integrateAccessibilityWithAllure()
   }
   /**
    * Gets executed when a refresh happens.

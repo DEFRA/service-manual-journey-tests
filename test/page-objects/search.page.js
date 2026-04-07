@@ -13,8 +13,8 @@ class SearchPage extends Page {
   }
 
   get resultsCount() {
-    // Results count text in main content
-    return $('main .govuk-body-l')
+    // Try the specific search results count element first, fall back to any body-l in main
+    return $('main .defra-search-results__count, main .search-results__count, main [data-testid="results-count"], main .govuk-body-l')
   }
 
   get firstResult() {
@@ -22,9 +22,8 @@ class SearchPage extends Page {
   }
 
   open(query = '') {
-    return super.open(
-      `/search${query ? `?q=${encodeURIComponent(query)}` : ''}`
-    )
+    const qs = query ? '?q=' + encodeURIComponent(query) : ''
+    return super.open('/search' + qs)
   }
 }
 

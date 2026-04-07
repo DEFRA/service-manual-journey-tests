@@ -33,7 +33,7 @@ export const config = {
   // then the current working directory is where your `package.json` resides, so `wdio`
   // will be called from there.
   //
-    specs: ['./test/specs/**/*.e2e.js', './test/specs/**/*.test.js', './test/specs/**/*.spec.js'],
+  specs: ['./test/specs/**/*.e2e.js', './test/specs/**/*.test.js', './test/specs/**/*.spec.js'],
   // Patterns to exclude.
   exclude: [
     // 'path/to/excluded/files'
@@ -318,12 +318,18 @@ export const config = {
     return new Promise((resolve, reject) => {
       const generationTimeout = setTimeout(() => reject(reportError), oneMinute)
 
-      generation.on('exit', function (exitCode) {
+      generation.on('exit', async function (exitCode) {
         clearTimeout(generationTimeout)
 
         if (exitCode !== 0) {
           return reject(reportError)
         }
+
+        // Integrate accessibility HTML reports into the Allure report
+        const { integrateAccessibilityWithAllure } = await import(
+          './allure-accessibility-plugin/allure-accessibility-integration.js'
+        )
+        integrateAccessibilityWithAllure()
 
         allure(['open'])
         resolve()

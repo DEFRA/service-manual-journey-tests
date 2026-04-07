@@ -3,9 +3,9 @@ import { browser, expect } from '@wdio/globals'
 import ServiceManualPage from '../page-objects/service-manual.page'
 import ErrorPage from '../page-objects/error-page.page'
 
-describe('01-Service Manual — Page content, tile links and 404 check', () => {
+describe('Verify Service Manual workflow — Path: /service-manual', () => {
   // P1-04
-  it('should display the title and all common approaches/roles', async () => {
+  it('Given I am on /service-manual, when the page loads, then the hero title, all role-based tiles with correct links, and tile descriptions are displayed', async () => {
     await ServiceManualPage.open()
     await expect(ServiceManualPage.heroTitle).toBeDisplayed()
     await expect(ServiceManualPage.heroTitle).toHaveText(/Design and build digital services for Defra/i)
@@ -50,7 +50,7 @@ describe('01-Service Manual — Page content, tile links and 404 check', () => {
   // single-tile navigation test removed: covered by P1-07 which iterates and verifies each major tile
 
   // P1-06
-  it('should load the Service Manual page (fail on non-200 HTTP status)', async () => {
+  it('Given I am on /service-manual, when the page loads, then it returns HTTP 200 and the hero title is displayed', async () => {
     await ServiceManualPage.open()
 
     const status = await browser.executeAsync(async (done) => {
@@ -82,7 +82,7 @@ describe('01-Service Manual — Page content, tile links and 404 check', () => {
   })
 
   // P1-07
-  it('should navigate to each major tile and ensure the destination is healthy', async () => {
+  it('Given I am on /service-manual, when I click each major tile, then each destination returns HTTP 200 and is not an error page', async () => {
     const tiles = [
       ServiceManualPage.serviceAssessmentsTile,
       ServiceManualPage.accessibilityTile,

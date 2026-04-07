@@ -3,9 +3,8 @@ import { browser, expect } from '@wdio/globals'
 import DeliveryGroupsPage from '../page-objects/delivery-groups.page'
 import ErrorPage from '../page-objects/error-page.page'
 
-describe('02-Delivery Groups — Page content, tile links and 404 check', () => {
-  // P1-87
-  it('should display links to "Meet delivery standards" and "Follow delivery governance"', async () => {
+describe('Delivery Groups Tile Verification', () => {
+  it('Given I am on /delivery-groups, when the page loads, then tiles for "Meet delivery standards" and "Follow delivery governance" are shown with correct descriptions', async () => {
     await DeliveryGroupsPage.open()
     await expect(DeliveryGroupsPage.meetStandardsTile).toBeDisplayed()
     await expect(DeliveryGroupsPage.followGovernanceTile).toBeDisplayed()
@@ -14,8 +13,7 @@ describe('02-Delivery Groups — Page content, tile links and 404 check', () => 
     await expect(DeliveryGroupsPage.meetStandardsTileBody).toHaveText(/How to meet the standards expected of a high-performing delivery group\./i)
   })
 
-  // P1-88
-  it('should navigate to "Meet delivery standards" child section when the tile is clicked', async () => {
+  it('Given I am on /delivery-groups, when I click the "Meet delivery standards" tile, then I navigate to /delivery-groups/meet-delivery-standards', async () => {
     await DeliveryGroupsPage.open()
     await DeliveryGroupsPage.meetStandardsTile.waitForClickable()
     await DeliveryGroupsPage.meetStandardsTile.click()
@@ -23,8 +21,7 @@ describe('02-Delivery Groups — Page content, tile links and 404 check', () => 
   })
   
 
-  // P1-89
-  it('should load the Delivery Groups page (fail on non-200 HTTP status)', async () => {
+  it('Given I am on /delivery-groups, when the page loads, then it returns HTTP 200 and no error page is shown', async () => {
     await DeliveryGroupsPage.open()
 
     // check HTTP status for the current page using the browser's fetch

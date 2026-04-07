@@ -9,10 +9,13 @@ export async function initialiseAccessibilityChecking() {
     fs.mkdirSync(reportDirectory)
   }
 
-  await wcagChecker.init(browser)
+  // Per wcagchecker README: init() takes no parameters
+  await wcagChecker.init()
 }
 
-export async function analyseAccessibility(suffix) {
+export async function analyseAccessibility(suffix = '') {
+  // Per wcagchecker README: analyse(browser, '') — pass empty string when no
+  // unique suffix is needed (leave blank unless scanning the same page multiple times)
   await wcagChecker.analyse(browser, suffix)
 }
 

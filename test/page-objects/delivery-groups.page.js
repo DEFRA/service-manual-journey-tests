@@ -12,7 +12,7 @@ class DeliveryGroupsPage extends Page {
   }
 
   get followGovernanceTile() {
-  return $('a[href="/delivery-groups/follow-delivery-governance"]')
+    return $('a[href="https://defra.github.io/delivery-group-governance/"]')
   }
   
 

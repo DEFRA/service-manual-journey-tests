@@ -8,23 +8,24 @@ const contentPages = [
   // Top-level content pages
   {
     path: '/accessibility',
-    titlePattern: /Make sure everyone can use the service/
+    titlePattern: /5. Make sure everyone can use the service/i
   },
-  { path: '/design', titlePattern: /Design/ },
-  { path: '/user-research', titlePattern: /User research/ },
-  { path: '/content', titlePattern: /Content/ },
-  { path: '/sustainability', titlePattern: /Deliver a sustainable service/ },
-  { path: '/service-assessments', titlePattern: /Service assessments/ },
+  { path: '/design', titlePattern: /Design/i },
+  { path: '/user-research', titlePattern: /User research/i },
+  { path: '/content', titlePattern: /Content/i },
+  { path: '/sustainability', titlePattern: /15. Deliver a sustainable service/i },
+  { path: '/service-assessments', titlePattern: /Service assessments/i },
   {
     path: '/testing-and-assurance',
-    titlePattern: /Quality Assurance and Test/
+    titlePattern: /Quality Assurance and Test/i
   },
-  { path: '/business-analysis', titlePattern: /Business analysis/ },
-  { path: '/product-and-delivery', titlePattern: /Product and delivery/ },
+  { path: '/business-analysis', titlePattern: /Business analysis/i },
+  { path: '/product-and-delivery', titlePattern: /Product and delivery/i },
   {
     path: '/architecture-and-software-development',
-    titlePattern: /Architecture/
+    titlePattern: /Architecture/i
   },
+  { path: '/security', titlePattern: /Create a secure service/i },
 
   // Service Assessments sub-pages
   {
@@ -39,6 +40,10 @@ const contentPages = [
     path: '/service-assessments/gov-uk-exemptions',
     titlePattern: /GOV.UK exemptions/i
   },
+  {
+    path: '/service-assessments/assessment-questions',
+    titlePattern: /Assessment questions/i
+  },
 
   // Architecture sub-pages
   {
@@ -51,12 +56,13 @@ const contentPages = [
   },
   {
     path: '/architecture-and-software-development/defra-accessible-maps',
-    titlePattern: /Defra Interactive Map/i
+    titlePattern: /Defra.*Map/i
   },
   {
     path: '/architecture-and-software-development/defra-forms',
     titlePattern: /Defra Forms/i
   },
+
   // Accessibility sub-pages
   {
     path: '/accessibility/manage-accessibility',
@@ -71,40 +77,85 @@ const contentPages = [
   { path: '/design/branding', titlePattern: /Branding/i },
   { path: '/design/cookies', titlePattern: /Cookies/i },
   { path: '/design/data-visualisation', titlePattern: /Data visualisation/i },
+  { path: '/design/prototyping', titlePattern: /Prototyping/i },
+  { path: '/design/tools', titlePattern: /Tools/i },
+  { path: '/design/components-and-patterns', titlePattern: /Components and patterns/i },
 
   // User Research sub-pages
   {
     path: '/user-research/scoping-research',
-    titlePattern: /Scoping research/i
-  },
-  {
-    path: '/user-research/planning-research',
-    titlePattern: /Planning research/i
+    titlePattern: /Research scoping and planning/i
   },
   {
     path: '/user-research/recruiting-participants',
-    titlePattern: /Recruiting participants/i
+    titlePattern: /Participant recruitment/i
   },
   {
-    path: '/user-research/participant-recruitment-methods',
-    titlePattern: /Participant recruitment methods/i
+    path: '/user-research/standards-and-guidance',
+    titlePattern: /Standards and guidance/i
   },
   {
-    path: '/user-research/gathering-consent',
-    titlePattern: /Gathering consent/i
+    path: '/user-research/tools',
+    titlePattern: /Tools/i
+  },
+
+  // Content sub-pages
+  {
+    path: '/content/inclusive-clear-language',
+    titlePattern: /Inclusive.*language/i
   },
   {
-    path: '/user-research/preparing-for-data-collection',
-    titlePattern: /Preparing for data collection/i
+    path: '/content/designing-different-content-types',
+    titlePattern: /Designing.*content types/i
+  },
+  {
+    path: '/content/working-in-discovery',
+    titlePattern: /Working in the discovery/i
+  },
+  {
+    path: '/content/working-in-alpha',
+    titlePattern: /Working in the alpha/i
+  },
+  {
+    path: '/content/working-in-beta',
+    titlePattern: /Working in the beta/i
+  },
+  {
+    path: '/content/working-in-live',
+    titlePattern: /Working in the live/i
+  },
+  {
+    path: '/content/legal-content',
+    titlePattern: /Legal content/i
+  },
+  {
+    path: '/content/welsh-language-translation',
+    titlePattern: /Welsh.*translation/i
+  },
+  {
+    path: '/content/colour-contrast',
+    titlePattern: /Colour contrast/i
+  },
+  {
+    path: '/content/accessibility-tools',
+    titlePattern: /Accessibility design and testing tools/i
+  },
+  {
+    path: '/content/accessible-spreadsheets',
+    titlePattern: /Accessible spreadsheets/i
+  },
+  {
+    path: '/content/sharing-designs-recording-decisions',
+    titlePattern: /Sharing designs/i
   },
 
   // Sustainability sub-pages
   { path: '/sustainability/objectives', titlePattern: /Objectives/i },
   {
     path: '/sustainability/process',
-    titlePattern: /Assess risk and write statements/i
+    titlePattern: /Assess risks and record sustainability actions/i
   },
-  { path: '/sustainability/metrics', titlePattern: /Measure sustainability/i },
+  { path: '/sustainability/metrics', titlePattern: /Taking action and tracking sustainability performance through the Agile lifecycle/i },
 
   // Product & Delivery sub-pages
   { path: '/product-and-delivery/governance', titlePattern: /Governance/i },
@@ -125,6 +176,12 @@ const contentPages = [
     titlePattern: /Recommended approach/i
   },
 
+  // Security sub-pages
+  {
+    path: '/security/common-tasks',
+    titlePattern: /Get access and travel securely/i
+  },
+
   // Delivery Groups - Meet Standards
   {
     path: '/delivery-groups/meet-delivery-standards',
@@ -132,7 +189,7 @@ const contentPages = [
   },
   {
     path: '/delivery-groups/meet-delivery-standards/define-outcomes',
-    titlePattern: /Define and share outcomes/i
+    titlePattern: /Define.*outcomes/i
   },
   {
     path: '/delivery-groups/meet-delivery-standards/products-and-services',
@@ -178,14 +235,17 @@ const contentPages = [
   },
 
   // Other pages
-  { path: '/service-standard', titlePattern: /Service standard/i },
   { path: '/components', titlePattern: /Components/i },
   { path: '/patterns', titlePattern: /Patterns/i },
   { path: '/working-with-defra', titlePattern: /Working with Defra/i },
   { path: '/suggest-content', titlePattern: /Suggest content/i },
   {
     path: '/take-part-in-research',
-    titlePattern: /Take part in user research/i
+    titlePattern: /Take part.*research/i
+  },
+  {
+    path: '/accessibility-statement',
+    titlePattern: /Accessibility statement/i
   }
 ]
 
