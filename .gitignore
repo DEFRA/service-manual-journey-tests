@@ -16,3 +16,6 @@ FAILED
 logs/
 local.log
 browserstack.err
+# Output of 'npm pack'
+*.tgz
+!libs/wcag-js-v2-1.0.3.tgz
