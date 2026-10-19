@@ -20,7 +20,9 @@ class SuccessMeasuresPage extends Page {
   }
 
   open() {
-    return super.open('/delivery-groups/meet-delivery-standards/success-measures')
+    return super.open(
+      '/delivery-groups/meet-delivery-standards/success-measures'
+    )
   }
 
   async clickMeetStandardsBreadcrumb() {

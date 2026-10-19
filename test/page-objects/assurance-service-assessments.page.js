@@ -20,7 +20,9 @@ class AssuranceServiceAssessmentsPage extends Page {
   }
 
   open() {
-    return super.open('/delivery-groups/follow-delivery-governance/assurance/service-assessments')
+    return super.open(
+      '/delivery-groups/follow-delivery-governance/assurance/service-assessments'
+    )
   }
 
   async clickAssuranceBreadcrumb() {

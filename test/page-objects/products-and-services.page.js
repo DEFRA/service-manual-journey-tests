@@ -24,7 +24,9 @@ class ProductsAndServicesPage extends Page {
   }
 
   open() {
-    return super.open('/delivery-groups/meet-delivery-standards/products-and-services')
+    return super.open(
+      '/delivery-groups/meet-delivery-standards/products-and-services'
+    )
   }
 
   async getSectionNavLinkTexts() {

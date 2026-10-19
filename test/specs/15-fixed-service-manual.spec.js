@@ -8,42 +8,70 @@ describe('Verify Service Manual workflow — Path: /service-manual', () => {
   it('Given I am on /service-manual, when the page loads, then the hero title, all role-based tiles with correct links, and tile descriptions are displayed', async () => {
     await ServiceManualPage.open()
     await expect(ServiceManualPage.heroTitle).toBeDisplayed()
-    await expect(ServiceManualPage.heroTitle).toHaveText(/Design and build digital services for Defra/i)
-  await expect(ServiceManualPage.heroParagraph).toHaveText(/Use this manual to build consistent, usable services that put people\s+and the environment first\./i)
-  // verify all tiles are present and link to expected hrefs
-  await expect(ServiceManualPage.serviceAssessmentsTile).toBeDisplayed()
-  await expect(await ServiceManualPage.serviceAssessmentsTile.getAttribute('href')).toMatch(/\/service-assessments$/)
+    await expect(ServiceManualPage.heroTitle).toHaveText(
+      /Design and build digital services for Defra/i
+    )
+    await expect(ServiceManualPage.heroParagraph).toHaveText(
+      /Use this manual to build consistent, usable services that put people\s+and the environment first\./i
+    )
+    // verify all tiles are present and link to expected hrefs
+    await expect(ServiceManualPage.serviceAssessmentsTile).toBeDisplayed()
+    await expect(
+      await ServiceManualPage.serviceAssessmentsTile.getAttribute('href')
+    ).toMatch(/\/service-assessments$/)
 
-  await expect(ServiceManualPage.accessibilityTile).toBeDisplayed()
-  await expect(await ServiceManualPage.accessibilityTile.getAttribute('href')).toMatch(/\/accessibility$/)
+    await expect(ServiceManualPage.accessibilityTile).toBeDisplayed()
+    await expect(
+      await ServiceManualPage.accessibilityTile.getAttribute('href')
+    ).toMatch(/\/accessibility$/)
 
-  await expect(ServiceManualPage.sustainabilityTile).toBeDisplayed()
-  await expect(await ServiceManualPage.sustainabilityTile.getAttribute('href')).toMatch(/\/sustainability$/)
+    await expect(ServiceManualPage.sustainabilityTile).toBeDisplayed()
+    await expect(
+      await ServiceManualPage.sustainabilityTile.getAttribute('href')
+    ).toMatch(/\/sustainability$/)
 
-  await expect(ServiceManualPage.userResearchTile).toBeDisplayed()
-  await expect(await ServiceManualPage.userResearchTile.getAttribute('href')).toMatch(/\/user-research$/)
+    await expect(ServiceManualPage.userResearchTile).toBeDisplayed()
+    await expect(
+      await ServiceManualPage.userResearchTile.getAttribute('href')
+    ).toMatch(/\/user-research$/)
 
-  await expect(ServiceManualPage.contentTile).toBeDisplayed()
-  await expect(await ServiceManualPage.contentTile.getAttribute('href')).toMatch(/\/content$/)
+    await expect(ServiceManualPage.contentTile).toBeDisplayed()
+    await expect(
+      await ServiceManualPage.contentTile.getAttribute('href')
+    ).toMatch(/\/content$/)
 
-  await expect(ServiceManualPage.designTile).toBeDisplayed()
-  await expect(await ServiceManualPage.designTile.getAttribute('href')).toMatch(/\/design$/)
+    await expect(ServiceManualPage.designTile).toBeDisplayed()
+    await expect(
+      await ServiceManualPage.designTile.getAttribute('href')
+    ).toMatch(/\/design$/)
 
-  await expect(ServiceManualPage.testingAndAssuranceTile).toBeDisplayed()
-  await expect(await ServiceManualPage.testingAndAssuranceTile.getAttribute('href')).toMatch(/\/testing-and-assurance$/)
+    await expect(ServiceManualPage.testingAndAssuranceTile).toBeDisplayed()
+    await expect(
+      await ServiceManualPage.testingAndAssuranceTile.getAttribute('href')
+    ).toMatch(/\/testing-and-assurance$/)
 
-  await expect(ServiceManualPage.businessAnalysisTile).toBeDisplayed()
-  await expect(await ServiceManualPage.businessAnalysisTile.getAttribute('href')).toMatch(/\/business-analysis$/)
+    await expect(ServiceManualPage.businessAnalysisTile).toBeDisplayed()
+    await expect(
+      await ServiceManualPage.businessAnalysisTile.getAttribute('href')
+    ).toMatch(/\/business-analysis$/)
 
-  await expect(ServiceManualPage.productAndDeliveryTile).toBeDisplayed()
-  await expect(await ServiceManualPage.productAndDeliveryTile.getAttribute('href')).toMatch(/\/product-and-delivery$/)
+    await expect(ServiceManualPage.productAndDeliveryTile).toBeDisplayed()
+    await expect(
+      await ServiceManualPage.productAndDeliveryTile.getAttribute('href')
+    ).toMatch(/\/product-and-delivery$/)
 
-  await expect(ServiceManualPage.architectureTile).toBeDisplayed()
-  await expect(await ServiceManualPage.architectureTile.getAttribute('href')).toMatch(/\/architecture-and-software-development$/)
+    await expect(ServiceManualPage.architectureTile).toBeDisplayed()
+    await expect(
+      await ServiceManualPage.architectureTile.getAttribute('href')
+    ).toMatch(/\/architecture-and-software-development$/)
 
-  // tile body checks
-  await expect(ServiceManualPage.serviceAssessmentsTileBody).toHaveText(/Understand and meet the GOV\.UK Service Standard for Defra services\./i)
-  await expect(ServiceManualPage.accessibilityTileBody).toHaveText(/Meet accessibility standards and regulations for Defra services\./i)
+    // tile body checks
+    await expect(ServiceManualPage.serviceAssessmentsTileBody).toHaveText(
+      /Understand and meet the GOV\.UK Service Standard for Defra services\./i
+    )
+    await expect(ServiceManualPage.accessibilityTileBody).toHaveText(
+      /Meet accessibility standards and regulations for Defra services\./i
+    )
   })
 
   // P1-05
@@ -55,7 +83,11 @@ describe('Verify Service Manual workflow — Path: /service-manual', () => {
 
     const status = await browser.executeAsync(async (done) => {
       try {
-        const res = await fetch(globalThis.location.href, { method: 'GET', cache: 'no-store', redirect: 'manual' })
+        const res = await fetch(globalThis.location.href, {
+          method: 'GET',
+          cache: 'no-store',
+          redirect: 'manual'
+        })
         done(res.status)
       } catch (err) {
         /* eslint-disable-next-line no-console */
@@ -71,14 +103,17 @@ describe('Verify Service Manual workflow — Path: /service-manual', () => {
 
     if (await ErrorPage.mainHeading.isExisting()) {
       const heading = await ErrorPage.mainHeading.getText()
-      const errorHeadingRe = /page not found|archiv|unavailable|service unavailable|404|410|gone|removed|no longer available|not found|moved/i
+      const errorHeadingRe =
+        /page not found|archiv|unavailable|service unavailable|404|410|gone|removed|no longer available|not found|moved/i
       if (errorHeadingRe.test(heading)) {
         throw new Error(`Unexpected error/archived page shown: "${heading}"`)
       }
     }
 
     await expect(ServiceManualPage.heroTitle).toBeDisplayed()
-    await expect(ServiceManualPage.heroTitle).toHaveText(/Design and build digital services for Defra/i)
+    await expect(ServiceManualPage.heroTitle).toHaveText(
+      /Design and build digital services for Defra/i
+    )
   })
 
   // P1-07
@@ -91,7 +126,7 @@ describe('Verify Service Manual workflow — Path: /service-manual', () => {
       ServiceManualPage.userResearchTile,
       ServiceManualPage.contentTile,
       ServiceManualPage.designTile,
-      ServiceManualPage.testingAndAssuranceTile,
+      ServiceManualPage.testingAndAssuranceTile
     ]
 
     await ServiceManualPage.open()
@@ -120,7 +155,11 @@ describe('Verify Service Manual workflow — Path: /service-manual', () => {
       // check HTTP status on the landing page
       const status = await browser.executeAsync(async (done) => {
         try {
-          const res = await fetch(globalThis.location.href, { method: 'GET', cache: 'no-store', redirect: 'manual' })
+          const res = await fetch(globalThis.location.href, {
+            method: 'GET',
+            cache: 'no-store',
+            redirect: 'manual'
+          })
           done(res.status)
         } catch (err) {
           /* eslint-disable-next-line no-console */
@@ -136,7 +175,8 @@ describe('Verify Service Manual workflow — Path: /service-manual', () => {
       // guard against error/archived H1
       if (await ErrorPage.mainHeading.isExisting()) {
         const heading = await ErrorPage.mainHeading.getText()
-        const errorHeadingRe = /page not found|archiv|unavailable|service unavailable|404|410|gone|removed|no longer available|not found|moved/i
+        const errorHeadingRe =
+          /page not found|archiv|unavailable|service unavailable|404|410|gone|removed|no longer available|not found|moved/i
         if (errorHeadingRe.test(heading)) {
           throw new Error(`Tile ${href} landed on error page: "${heading}"`)
         }

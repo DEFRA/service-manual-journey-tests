@@ -16,7 +16,9 @@ class DefraAccessibleMapsPage extends Page {
   }
 
   open() {
-    return super.open('/architecture-and-software-development/defra-accessible-maps')
+    return super.open(
+      '/architecture-and-software-development/defra-accessible-maps'
+    )
   }
 
   async getExternalLinkHrefs() {

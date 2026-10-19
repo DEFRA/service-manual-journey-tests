@@ -8,18 +8,25 @@ describe('Delivery Groups Tile Verification', () => {
     await DeliveryGroupsPage.open()
     await expect(DeliveryGroupsPage.meetStandardsTile).toBeDisplayed()
     await expect(DeliveryGroupsPage.followGovernanceTile).toBeDisplayed()
-    await expect(DeliveryGroupsPage.heroParagraph).toHaveText(/Understanding the standards, governance and assurance process for your delivery group\./i)
-    await expect(DeliveryGroupsPage.followGovernanceTileBody).toHaveText(/Understand the boards, approvals and reporting required for your delivery group\./i)
-    await expect(DeliveryGroupsPage.meetStandardsTileBody).toHaveText(/How to meet the standards expected of a high-performing delivery group\./i)
+    await expect(DeliveryGroupsPage.heroParagraph).toHaveText(
+      /Understanding the standards, governance and assurance process for your delivery group\./i
+    )
+    await expect(DeliveryGroupsPage.followGovernanceTileBody).toHaveText(
+      /Understand the boards, approvals and reporting required for your delivery group\./i
+    )
+    await expect(DeliveryGroupsPage.meetStandardsTileBody).toHaveText(
+      /How to meet the standards expected of a high-performing delivery group\./i
+    )
   })
 
   it('Given I am on /delivery-groups, when I click the "Meet delivery standards" tile, then I navigate to /delivery-groups/meet-delivery-standards', async () => {
     await DeliveryGroupsPage.open()
     await DeliveryGroupsPage.meetStandardsTile.waitForClickable()
     await DeliveryGroupsPage.meetStandardsTile.click()
-    await expect(browser).toHaveUrl(/\/delivery-groups\/meet-delivery-standards/)
+    await expect(browser).toHaveUrl(
+      /\/delivery-groups\/meet-delivery-standards/
+    )
   })
-  
 
   it('Given I am on /delivery-groups, when the page loads, then it returns HTTP 200 and no error page is shown', async () => {
     await DeliveryGroupsPage.open()
@@ -27,7 +34,11 @@ describe('Delivery Groups Tile Verification', () => {
     // check HTTP status for the current page using the browser's fetch
     const status = await browser.executeAsync(async (done) => {
       try {
-        const res = await fetch(globalThis.location.href, { method: 'GET', cache: 'no-store', redirect: 'manual' })
+        const res = await fetch(globalThis.location.href, {
+          method: 'GET',
+          cache: 'no-store',
+          redirect: 'manual'
+        })
         done(res.status)
       } catch (err) {
         // network/error -> return -1 (log to aid debugging)
@@ -46,7 +57,8 @@ describe('Delivery Groups Tile Verification', () => {
     if (await ErrorPage.mainHeading.isExisting()) {
       const heading = await ErrorPage.mainHeading.getText()
       // treat a range of headings as error states (not found, archived, unavailable, moved, etc.)
-      const errorHeadingRe = /page not found|archiv|unavailable|service unavailable|404|410|gone|removed|no longer available|not found|moved/i
+      const errorHeadingRe =
+        /page not found|archiv|unavailable|service unavailable|404|410|gone|removed|no longer available|not found|moved/i
       if (errorHeadingRe.test(heading)) {
         throw new Error(`Unexpected page shown: "${heading}"`)
       }

@@ -19,7 +19,13 @@ describe('Content Design And Accessibility Verification', () => {
         if (l.level !== 'SEVERE') return false
         const msg = (l.message || '').toString()
         if (/favicon/i.test(msg)) return false
-        if (/Failed to load resource: the server responded with a status of 404/i.test(msg) && /images\//i.test(msg)) return false
+        if (
+          /Failed to load resource: the server responded with a status of 404/i.test(
+            msg
+          ) &&
+          /images\//i.test(msg)
+        )
+          return false
         if (/this-page-does-not-exist-404/i.test(msg)) return false
         return true
       })
@@ -73,9 +79,18 @@ describe('Content Design And Accessibility Verification', () => {
 
   it('Given I visit each content subpage URL, when the page loads, then each returns HTTP 200 and displays the correct heading', async () => {
     const subpages = [
-      { href: '/content/inclusive-clear-language', heading: /inclusive|clear language/i },
-      { href: '/content/designing-different-content-types', heading: /designing different content types/i },
-      { href: '/content/sharing-designs-recording-decisions', heading: /sharing designs|recording decisions/i },
+      {
+        href: '/content/inclusive-clear-language',
+        heading: /inclusive|clear language/i
+      },
+      {
+        href: '/content/designing-different-content-types',
+        heading: /designing different content types/i
+      },
+      {
+        href: '/content/sharing-designs-recording-decisions',
+        heading: /sharing designs|recording decisions/i
+      },
       { href: '/content/working-in-discovery', heading: /discovery/i },
       { href: '/content/working-in-alpha', heading: /alpha/i },
       { href: '/content/working-in-beta', heading: /beta/i },
@@ -83,15 +98,22 @@ describe('Content Design And Accessibility Verification', () => {
       { href: '/content/legal-content', heading: /legal/i },
       { href: '/content/welsh-language-translation', heading: /welsh/i },
       { href: '/content/colour-contrast', heading: /colour contrast/i },
-      { href: '/content/accessible-spreadsheets', heading: /accessible spreadsheets/i },
+      {
+        href: '/content/accessible-spreadsheets',
+        heading: /accessible spreadsheets/i
+      },
       { href: '/content/accessibility-tools', heading: /accessibility.*tools/i }
     ]
 
     for (const p of subpages) {
       await browser.url(p.href)
-      const hasH1 = await browser.execute(() => document.querySelector('main h1') !== null)
+      const hasH1 = await browser.execute(
+        () => document.querySelector('main h1') !== null
+      )
       if (!hasH1) {
-        throw new Error(`${p.href} — no <h1> found in main (possible error page)`)
+        throw new Error(
+          `${p.href} — no <h1> found in main (possible error page)`
+        )
       }
       const heading = await $('main h1')
       await expect(heading).toHaveText(p.heading)
@@ -117,7 +139,9 @@ describe('Content Design And Accessibility Verification', () => {
     const content = await WorkingInDiscoveryPage.pageContent.getText()
     expect(content).toMatch(/discovery/i)
     const linksRaw = await WorkingInDiscoveryPage.externalLinks
-    const links = Array.isArray(linksRaw) ? linksRaw : [linksRaw].filter(Boolean)
+    const links = Array.isArray(linksRaw)
+      ? linksRaw
+      : [linksRaw].filter(Boolean)
     expect(links.length).toBeGreaterThan(0)
   })
 
@@ -126,7 +150,9 @@ describe('Content Design And Accessibility Verification', () => {
     await WorkingInAlphaPage.open()
     await expect(WorkingInAlphaPage.mainHeading).toBeDisplayed()
     const detailsRaw = await WorkingInAlphaPage.detailsComponents
-    const details = Array.isArray(detailsRaw) ? detailsRaw : [detailsRaw].filter(Boolean)
+    const details = Array.isArray(detailsRaw)
+      ? detailsRaw
+      : [detailsRaw].filter(Boolean)
     if (details.length > 0) {
       await WorkingInAlphaPage.expandFirstDetails()
       const pageText = await $('main').getText()
@@ -170,7 +196,9 @@ describe('Content Design And Accessibility Verification', () => {
     const content = await WelshLanguageTranslationPage.pageContent.getText()
     expect(content).toMatch(/Welsh|translation/i)
     const linksRaw = await WelshLanguageTranslationPage.externalLinks
-    const links = Array.isArray(linksRaw) ? linksRaw : [linksRaw].filter(Boolean)
+    const links = Array.isArray(linksRaw)
+      ? linksRaw
+      : [linksRaw].filter(Boolean)
     expect(links.length).toBeGreaterThan(0)
   })
 
@@ -180,7 +208,9 @@ describe('Content Design And Accessibility Verification', () => {
   it('Given I am on /content/colour-contrast, when the page loads, then WCAG AA colour contrast guidance and the section nav entry are shown', async () => {
     await ColourContrastPage.open()
     await expect(ColourContrastPage.mainHeading).toBeDisplayed()
-    await expect(ColourContrastPage.mainHeading).toHaveText(/Colour contrast and colour blindness/i)
+    await expect(ColourContrastPage.mainHeading).toHaveText(
+      /Colour contrast and colour blindness/i
+    )
     const content = await ColourContrastPage.pageContent.getText()
     expect(content).toMatch(/WCAG|contrast ratio|AA/i)
     // Section nav should show this page under "Designing for everyone"

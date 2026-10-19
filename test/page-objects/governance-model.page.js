@@ -20,7 +20,9 @@ class GovernanceModelPage extends Page {
   }
 
   open() {
-    return super.open('/delivery-groups/follow-delivery-governance/governance-model')
+    return super.open(
+      '/delivery-groups/follow-delivery-governance/governance-model'
+    )
   }
 
   async clickAssuranceLink() {

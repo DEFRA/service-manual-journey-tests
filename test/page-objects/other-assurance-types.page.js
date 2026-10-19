@@ -16,7 +16,9 @@ class OtherAssuranceTypesPage extends Page {
   }
 
   open() {
-    return super.open('/delivery-groups/follow-delivery-governance/assurance/other-assurance-types')
+    return super.open(
+      '/delivery-groups/follow-delivery-governance/assurance/other-assurance-types'
+    )
   }
 
   async getExternalLinkHrefs() {

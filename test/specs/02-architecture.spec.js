@@ -14,7 +14,13 @@ describe('Verify Architecture And Software Development Workflow', () => {
         if (l.level !== 'SEVERE') return false
         const msg = (l.message || '').toString()
         if (/favicon/i.test(msg)) return false
-        if (/Failed to load resource: the server responded with a status of 404/i.test(msg) && /images\//i.test(msg)) return false
+        if (
+          /Failed to load resource: the server responded with a status of 404/i.test(
+            msg
+          ) &&
+          /images\//i.test(msg)
+        )
+          return false
         if (/this-page-does-not-exist-404/i.test(msg)) return false
         return true
       })
@@ -60,23 +66,41 @@ describe('Verify Architecture And Software Development Workflow', () => {
     const headingText = await ArchitecturePage.getHeadingText()
     expect(headingText).toBeTruthy()
     const content = await ArchitecturePage.pageContent.getText()
-    expect(content).toMatch(/GOV\.UK Service Standard|Core Delivery Platform|Defra/i)
+    expect(content).toMatch(
+      /GOV\.UK Service Standard|Core Delivery Platform|Defra/i
+    )
   })
 
   // ─── All subpages — HTTP 200 + heading check ──────────────────────────────
 
   it('Given I visit each architecture subpage URL, when the page loads, then each displays the correct heading', async () => {
     const subpages = [
-      { href: '/architecture-and-software-development/core-delivery-platform', heading: /Core Delivery Platform/i },
-      { href: '/architecture-and-software-development/defra-customer-identity', heading: /Defra Customer Identity/i },
-      { href: '/architecture-and-software-development/defra-forms', heading: /Defra Forms/i },
-      { href: '/architecture-and-software-development/defra-accessible-maps', heading: /Defra Interactive Map/i }
+      {
+        href: '/architecture-and-software-development/core-delivery-platform',
+        heading: /Core Delivery Platform/i
+      },
+      {
+        href: '/architecture-and-software-development/defra-customer-identity',
+        heading: /Defra Customer Identity/i
+      },
+      {
+        href: '/architecture-and-software-development/defra-forms',
+        heading: /Defra Forms/i
+      },
+      {
+        href: '/architecture-and-software-development/defra-accessible-maps',
+        heading: /Defra Interactive Map/i
+      }
     ]
     for (const p of subpages) {
       await browser.url(p.href)
-      const hasH1 = await browser.execute(() => document.querySelector('main h1') !== null)
+      const hasH1 = await browser.execute(
+        () => document.querySelector('main h1') !== null
+      )
       if (!hasH1) {
-        throw new Error(`${p.href} — no <h1> found in main (possible error page)`)
+        throw new Error(
+          `${p.href} — no <h1> found in main (possible error page)`
+        )
       }
       const heading = $('main h1')
       await expect(heading).toHaveText(p.heading)
@@ -106,12 +130,17 @@ describe('Verify Architecture And Software Development Workflow', () => {
 
     // Assert a new tab was opened
     await browser.waitUntil(
-      async () => (await browser.getWindowHandles()).length > handlesBefore.length,
-      { timeout: 8000, timeoutMsg: 'Expected "Defra outcome delivery group model" to open in a new tab, but no new tab appeared' }
+      async () =>
+        (await browser.getWindowHandles()).length > handlesBefore.length,
+      {
+        timeout: 8000,
+        timeoutMsg:
+          'Expected "Defra outcome delivery group model" to open in a new tab, but no new tab appeared'
+      }
     )
 
     const handlesAfter = await browser.getWindowHandles()
-    const newTab = handlesAfter.find(h => !handlesBefore.includes(h))
+    const newTab = handlesAfter.find((h) => !handlesBefore.includes(h))
     expect(newTab).toBeTruthy()
 
     // Clean up — close new tab and return to the original window
@@ -136,12 +165,17 @@ describe('Verify Architecture And Software Development Workflow', () => {
 
     // Assert a new tab was opened
     await browser.waitUntil(
-      async () => (await browser.getWindowHandles()).length > handlesBefore.length,
-      { timeout: 8000, timeoutMsg: 'Expected "Defra Tools Radar on Jira" to open in a new tab, but no new tab appeared' }
+      async () =>
+        (await browser.getWindowHandles()).length > handlesBefore.length,
+      {
+        timeout: 8000,
+        timeoutMsg:
+          'Expected "Defra Tools Radar on Jira" to open in a new tab, but no new tab appeared'
+      }
     )
 
     const handlesAfter = await browser.getWindowHandles()
-    const newTab = handlesAfter.find(h => !handlesBefore.includes(h))
+    const newTab = handlesAfter.find((h) => !handlesBefore.includes(h))
     expect(newTab).toBeTruthy()
 
     // Clean up — close new tab and return to the original window
@@ -184,7 +218,9 @@ describe('Verify Architecture And Software Development Workflow', () => {
     expect(pageSource).toContain('portal.cdp-int.defra.cloud')
 
     const cdpLinksRaw = await $$('main a[href*="portal.cdp-int.defra.cloud"]')
-    const cdpLinks = Array.isArray(cdpLinksRaw) ? cdpLinksRaw : [cdpLinksRaw].filter(Boolean)
+    const cdpLinks = Array.isArray(cdpLinksRaw)
+      ? cdpLinksRaw
+      : [cdpLinksRaw].filter(Boolean)
     expect(cdpLinks.length).toBeGreaterThan(0)
 
     for (const link of cdpLinks) {
@@ -207,7 +243,9 @@ describe('Verify Architecture And Software Development Workflow', () => {
   it('Given I am on the Defra Customer Identity page, when the page loads, then sign-in, IDMv2, and Defra ID authentication guidance is shown', async () => {
     await DefraCustomerIdentityPage.open()
     await expect(DefraCustomerIdentityPage.mainHeading).toBeDisplayed()
-    await expect(DefraCustomerIdentityPage.mainHeading).toHaveText(/Defra Customer Identity/i)
+    await expect(DefraCustomerIdentityPage.mainHeading).toHaveText(
+      /Defra Customer Identity/i
+    )
     const content = await DefraCustomerIdentityPage.pageContent.getText()
     expect(content).toMatch(/sign in|IDMv2|Defra ID|authentication|identity/i)
   })
@@ -229,11 +267,15 @@ describe('Verify Architecture And Software Development Workflow', () => {
   it('Given I am on the Defra Interactive Map page, when the page loads, then accessible mapping guidance and external resource links are shown', async () => {
     await DefraAccessibleMapsPage.open()
     await expect(DefraAccessibleMapsPage.mainHeading).toBeDisplayed()
-    await expect(DefraAccessibleMapsPage.mainHeading).toHaveText(/Defra Interactive Map/i)
+    await expect(DefraAccessibleMapsPage.mainHeading).toHaveText(
+      /Defra Interactive Map/i
+    )
     const content = await DefraAccessibleMapsPage.pageContent.getText()
     expect(content).toMatch(/map|mapping|accessible/i)
     const linksRaw = await DefraAccessibleMapsPage.externalLinks
-    const links = Array.isArray(linksRaw) ? linksRaw : [linksRaw].filter(Boolean)
+    const links = Array.isArray(linksRaw)
+      ? linksRaw
+      : [linksRaw].filter(Boolean)
     expect(links.length).toBeGreaterThan(0)
   })
 })

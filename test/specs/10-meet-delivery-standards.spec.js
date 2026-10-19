@@ -11,7 +11,13 @@ describe('Meet Delivery Standards Verification', () => {
         if (l.level !== 'SEVERE') return false
         const msg = (l.message || '').toString()
         if (/favicon/i.test(msg)) return false
-        if (/Failed to load resource: the server responded with a status of 404/i.test(msg) && /images\//i.test(msg)) return false
+        if (
+          /Failed to load resource: the server responded with a status of 404/i.test(
+            msg
+          ) &&
+          /images\//i.test(msg)
+        )
+          return false
         if (/this-page-does-not-exist-404/i.test(msg)) return false
         return true
       })
@@ -32,7 +38,9 @@ describe('Meet Delivery Standards Verification', () => {
     await MeetDeliveryStandardsPage.open()
     await expect(MeetDeliveryStandardsPage.mainHeading).toBeDisplayed()
     await expect(MeetDeliveryStandardsPage.defineOutcomesLink).toBeDisplayed()
-    await expect(MeetDeliveryStandardsPage.productsAndServicesLink).toBeDisplayed()
+    await expect(
+      MeetDeliveryStandardsPage.productsAndServicesLink
+    ).toBeDisplayed()
     await expect(MeetDeliveryStandardsPage.roadmapForChangeLink).toBeDisplayed()
     await expect(MeetDeliveryStandardsPage.successMeasuresLink).toBeDisplayed()
   })
@@ -49,8 +57,13 @@ describe('Meet Delivery Standards Verification', () => {
   it('Given I am on the Meet Delivery Standards page, When I view the breadcrumb navigation, Then I should see a "Delivery groups" breadcrumb link pointing back to /delivery-groups', async () => {
     await MeetDeliveryStandardsPage.open()
     await expect(MeetDeliveryStandardsPage.breadcrumbs).toBeDisplayed()
-    await expect(MeetDeliveryStandardsPage.deliveryGroupsBreadcrumbLink).toBeDisplayed()
-    const href = await MeetDeliveryStandardsPage.deliveryGroupsBreadcrumbLink.getAttribute('href')
+    await expect(
+      MeetDeliveryStandardsPage.deliveryGroupsBreadcrumbLink
+    ).toBeDisplayed()
+    const href =
+      await MeetDeliveryStandardsPage.deliveryGroupsBreadcrumbLink.getAttribute(
+        'href'
+      )
     expect(href).toMatch(/\/delivery-groups/)
   })
 
@@ -60,8 +73,12 @@ describe('Meet Delivery Standards Verification', () => {
   it('Given I am on the Roadmap for change page at /delivery-groups/meet-delivery-standards/roadmap-for-change, When the page loads, Then I should see Green/Amber/Red RAG criteria badges explaining roadmap quality expectations', async () => {
     await RoadmapForChangePage.open()
     await expect(RoadmapForChangePage.mainHeading).toBeDisplayed()
-    await expect(RoadmapForChangePage.mainHeading).toHaveText(/Roadmap for change/i)
-    const tagCount = await browser.execute(() => document.querySelectorAll('main .govuk-tag').length)
+    await expect(RoadmapForChangePage.mainHeading).toHaveText(
+      /Roadmap for change/i
+    )
+    const tagCount = await browser.execute(
+      () => document.querySelectorAll('main .govuk-tag').length
+    )
     expect(tagCount).toBeGreaterThan(0)
     const content = await RoadmapForChangePage.getPageContentText()
     expect(content).toMatch(/must show|roadmap/i)
@@ -70,7 +87,9 @@ describe('Meet Delivery Standards Verification', () => {
   // P1-94
   it('Given I am on the Roadmap for change page, When I view the Amber criteria section, Then I should see guidance about identifying gaps in the roadmap that need attention', async () => {
     await RoadmapForChangePage.open()
-    const amberCount = await browser.execute(() => document.querySelectorAll('main .govuk-tag--yellow').length)
+    const amberCount = await browser.execute(
+      () => document.querySelectorAll('main .govuk-tag--yellow').length
+    )
     expect(amberCount).toBeGreaterThan(0)
     const content = await RoadmapForChangePage.getPageContentText()
     expect(content).toMatch(/amber|gap/i)
@@ -79,7 +98,9 @@ describe('Meet Delivery Standards Verification', () => {
   // P1-95
   it('Given I am on the Roadmap for change page, When I inspect the DOM, Then I should find govuk-tag badge elements used for the RAG (Red/Amber/Green) rating system', async () => {
     await RoadmapForChangePage.open()
-    const tagCount = await browser.execute(() => document.querySelectorAll('main .govuk-tag').length)
+    const tagCount = await browser.execute(
+      () => document.querySelectorAll('main .govuk-tag').length
+    )
     expect(tagCount).toBeGreaterThan(0)
     // Verify at least one tag is visible via the first match
     const firstTag = await browser.$('main .govuk-tag')

@@ -1,4 +1,10 @@
-import { init, analyse, getHtmlReportByCategory, getHtmlReportByGuideLine, getHtmlPerformanceMetrics } from 'wcag-js-v2';
+import {
+  init,
+  analyse,
+  getHtmlReportByCategory,
+  getHtmlReportByGuideLine,
+  getHtmlPerformanceMetrics
+} from 'wcag-js-v2'
 import fs from 'fs'
 import path from 'path'
 
@@ -40,7 +46,7 @@ export async function generateAccessibilityReports(filePrefix) {
       }
     )
   }
-   if (performanceMetrics && performanceMetrics.length > 0) {
+  if (performanceMetrics && performanceMetrics.length > 0) {
     fs.writeFileSync(
       path.join(reportDirectory, `${filePrefix}-performance-metrics.html`),
       performanceMetrics,
@@ -50,8 +56,6 @@ export async function generateAccessibilityReports(filePrefix) {
     )
   }
 }
-
-
 
 export function generateAccessibilityReportIndex() {
   if (!fs.existsSync(reportDirectory)) {

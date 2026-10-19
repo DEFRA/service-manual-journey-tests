@@ -24,7 +24,9 @@ class DefineOutcomesPage extends Page {
   }
 
   open() {
-    return super.open('/delivery-groups/meet-delivery-standards/define-outcomes')
+    return super.open(
+      '/delivery-groups/meet-delivery-standards/define-outcomes'
+    )
   }
 
   async clickMeetStandardsBreadcrumb() {

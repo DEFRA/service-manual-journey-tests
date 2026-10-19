@@ -14,7 +14,13 @@ describe('Accessibility Pages And Statements Verification', () => {
       if (l.level !== 'SEVERE') return false
       const msg = (l.message || '').toString()
       if (/favicon/i.test(msg)) return false
-      if (/Failed to load resource: the server responded with a status of 404/i.test(msg) && /images\//i.test(msg)) return false
+      if (
+        /Failed to load resource: the server responded with a status of 404/i.test(
+          msg
+        ) &&
+        /images\//i.test(msg)
+      )
+        return false
       if (/this-page-does-not-exist-404/i.test(msg)) return false
       return true
     })
@@ -38,11 +44,11 @@ describe('Accessibility Pages And Statements Verification', () => {
     await expect(AccessibilityPage.sectionNav).toBeDisplayed()
     await AccessibilityPage.manageAccessibilityLink.waitForClickable()
     await AccessibilityPage.clickManageAccessibilityLink()
-  await expect(browser).toHaveUrl(/\/accessibility\/manage-accessibility/)
-  // Verify the target page has a heading and some expected content
-  await expect(browser).toHaveTitle(/Manage accessibility|Accessibility/i)
-  const heading = await $('main h1')
-  await expect(heading).toBeDisplayed()
+    await expect(browser).toHaveUrl(/\/accessibility\/manage-accessibility/)
+    // Verify the target page has a heading and some expected content
+    await expect(browser).toHaveTitle(/Manage accessibility|Accessibility/i)
+    const heading = await $('main h1')
+    await expect(heading).toBeDisplayed()
   })
 
   it('Given I am on /accessibility, when the section nav is present, then it contains at least one nav item', async () => {
@@ -72,8 +78,14 @@ describe('Accessibility Pages And Statements Verification', () => {
 
   it('Given I click each section nav link on /accessibility, when I land on each subpage, then each returns HTTP 200 with relevant content', async () => {
     const links = [
-      { href: '/accessibility/manage-accessibility', content: /stage.gate|accessibility statement/i },
-      { href: '/accessibility/test-for-accessibility', content: /test|assistive technology|screen reader/i }
+      {
+        href: '/accessibility/manage-accessibility',
+        content: /stage.gate|accessibility statement/i
+      },
+      {
+        href: '/accessibility/test-for-accessibility',
+        content: /test|assistive technology|screen reader/i
+      }
     ]
 
     for (const l of links) {
@@ -84,7 +96,11 @@ describe('Accessibility Pages And Statements Verification', () => {
       // Quick HTTP status check via fetch in browser context
       const status = await browser.executeAsync(async (done) => {
         try {
-          const res = await fetch(globalThis.location.href, { method: 'GET', cache: 'no-store', redirect: 'manual' })
+          const res = await fetch(globalThis.location.href, {
+            method: 'GET',
+            cache: 'no-store',
+            redirect: 'manual'
+          })
           done(res.status)
         } catch (err) {
           // eslint-disable-next-line no-console
@@ -107,11 +123,26 @@ describe('Accessibility Pages And Statements Verification', () => {
   // Comprehensive content validation for accessibility-related URLs
   it('Given I visit each accessibility-related URL, when the page loads, then each returns HTTP 200 and displays relevant content', async () => {
     const pages = [
-      { path: '/accessibility', content: /accessibility|Make sure everyone can use the service/i },
-      { path: '/accessibility/manage-accessibility', content: /stage.gate|accessibility statement/i },
-      { path: '/accessibility/test-for-accessibility', content: /test|assistive technology|screen reader/i },
-      { path: '/accessibility-statement', content: /Accessibility statement|cctsassurance|enforcement/i },
-      { path: '/content/accessibility-tools', content: /tool|axe|WAVE|accessibility design and testing tools/i }
+      {
+        path: '/accessibility',
+        content: /accessibility|Make sure everyone can use the service/i
+      },
+      {
+        path: '/accessibility/manage-accessibility',
+        content: /stage.gate|accessibility statement/i
+      },
+      {
+        path: '/accessibility/test-for-accessibility',
+        content: /test|assistive technology|screen reader/i
+      },
+      {
+        path: '/accessibility-statement',
+        content: /Accessibility statement|cctsassurance|enforcement/i
+      },
+      {
+        path: '/content/accessibility-tools',
+        content: /tool|axe|WAVE|accessibility design and testing tools/i
+      }
     ]
 
     for (const p of pages) {
@@ -121,7 +152,11 @@ describe('Accessibility Pages And Statements Verification', () => {
       // HTTP status check
       const status = await browser.executeAsync(async (done) => {
         try {
-          const res = await fetch(globalThis.location.href, { method: 'GET', cache: 'no-store', redirect: 'manual' })
+          const res = await fetch(globalThis.location.href, {
+            method: 'GET',
+            cache: 'no-store',
+            redirect: 'manual'
+          })
           done(res.status)
         } catch (err) {
           // eslint-disable-next-line no-console

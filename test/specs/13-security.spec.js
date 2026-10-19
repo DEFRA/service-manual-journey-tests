@@ -12,7 +12,13 @@ describe('Security Guidance And Tasks Verification', () => {
         if (l.level !== 'SEVERE') return false
         const msg = (l.message || '').toString()
         if (/favicon/i.test(msg)) return false
-        if (/Failed to load resource: the server responded with a status of 404/i.test(msg) && /images\//i.test(msg)) return false
+        if (
+          /Failed to load resource: the server responded with a status of 404/i.test(
+            msg
+          ) &&
+          /images\//i.test(msg)
+        )
+          return false
         if (/this-page-does-not-exist-404/i.test(msg)) return false
         return true
       })
@@ -32,7 +38,9 @@ describe('Security Guidance And Tasks Verification', () => {
   it('Given I am on /security, when the page loads, then the heading, section nav, Secure by Design guidance, and security team contact are shown', async () => {
     await SecurityPage.open()
     await expect(SecurityPage.mainHeading).toBeDisplayed()
-    await expect(SecurityPage.mainHeading).toHaveText(/Create a secure service/i)
+    await expect(SecurityPage.mainHeading).toHaveText(
+      /Create a secure service/i
+    )
     await expect(SecurityPage.sectionNav).toBeDisplayed()
     await expect(SecurityPage.commonTasksLink).toBeDisplayed()
     const content = await SecurityPage.pageContent.getText()
@@ -61,9 +69,13 @@ describe('Security Guidance And Tasks Verification', () => {
   it('Given I am on /security/common-tasks, when the page loads, then cloud account access, service desk, and overseas travel security guidance is shown', async () => {
     await SecurityCommonTasksPage.open()
     await expect(SecurityCommonTasksPage.mainHeading).toBeDisplayed()
-    await expect(SecurityCommonTasksPage.mainHeading).toHaveText(/Get access and travel securely/i)
+    await expect(SecurityCommonTasksPage.mainHeading).toHaveText(
+      /Get access and travel securely/i
+    )
     const content = await SecurityCommonTasksPage.pageContent.getText()
-    expect(content).toMatch(/secret|dependency|scan|security|cloud account|travel/i)
+    expect(content).toMatch(
+      /secret|dependency|scan|security|cloud account|travel/i
+    )
     expect(content).toMatch(/Cloud Account|Service Desk|overseas|approval/i)
   })
 
@@ -72,11 +84,16 @@ describe('Security Guidance And Tasks Verification', () => {
   it('Given I visit each security page URL, when the page loads, then each displays the correct heading', async () => {
     const pages = [
       { href: '/security', heading: /Create a secure service/i },
-      { href: '/security/common-tasks', heading: /Get access and travel securely/i }
+      {
+        href: '/security/common-tasks',
+        heading: /Get access and travel securely/i
+      }
     ]
     for (const p of pages) {
       await browser.url(p.href)
-      const hasH1 = await browser.execute(() => document.querySelector('main h1') !== null)
+      const hasH1 = await browser.execute(
+        () => document.querySelector('main h1') !== null
+      )
       if (!hasH1) throw new Error(`${p.href} — no <h1> found in main`)
       const heading = await browser.$('main h1')
       await expect(heading).toHaveText(p.heading)

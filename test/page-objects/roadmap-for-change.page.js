@@ -12,7 +12,9 @@ class RoadmapForChangePage extends Page {
   }
 
   open() {
-    return super.open('/delivery-groups/meet-delivery-standards/roadmap-for-change')
+    return super.open(
+      '/delivery-groups/meet-delivery-standards/roadmap-for-change'
+    )
   }
 
   async getPageContentText() {
@@ -22,12 +24,16 @@ class RoadmapForChangePage extends Page {
   // Use browser.execute for tag counts to avoid ChainablePromiseArray iteration issues
   async getRagTagsCount() {
     const { browser } = await import('@wdio/globals')
-    return browser.execute(() => document.querySelectorAll('main .govuk-tag').length)
+    return browser.execute(
+      () => document.querySelectorAll('main .govuk-tag').length
+    )
   }
 
   async getAmberTagsCount() {
     const { browser } = await import('@wdio/globals')
-    return browser.execute(() => document.querySelectorAll('main .govuk-tag--yellow').length)
+    return browser.execute(
+      () => document.querySelectorAll('main .govuk-tag--yellow').length
+    )
   }
 }
 

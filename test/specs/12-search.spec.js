@@ -9,7 +9,13 @@ describe('Search Input And Results Verification', () => {
         if (l.level !== 'SEVERE') return false
         const msg = (l.message || '').toString()
         if (/favicon/i.test(msg)) return false
-        if (/Failed to load resource: the server responded with a status of 404/i.test(msg) && /images\//i.test(msg)) return false
+        if (
+          /Failed to load resource: the server responded with a status of 404/i.test(
+            msg
+          ) &&
+          /images\//i.test(msg)
+        )
+          return false
         return true
       })
       if (errors.length > 0) {
@@ -43,9 +49,13 @@ describe('Search Input And Results Verification', () => {
       await browser.pause(500) // Wait to confirm no autocomplete
 
       // Single letter should NOT trigger autocomplete
-      const autocompleteList = $('[role="listbox"], .autocomplete__menu, #defra-search__listbox')
-      const isListDisplayed = await autocompleteList.isDisplayed().catch(() => false)
-      
+      const autocompleteList = $(
+        '[role="listbox"], .autocomplete__menu, #defra-search__listbox'
+      )
+      const isListDisplayed = await autocompleteList
+        .isDisplayed()
+        .catch(() => false)
+
       expect(isListDisplayed).toBe(false)
       await expect(searchInput).toHaveValue('T')
     })
@@ -57,9 +67,13 @@ describe('Search Input And Results Verification', () => {
       await browser.pause(500) // Wait for autocomplete to load
 
       // 2+ letters should trigger autocomplete dropdown
-      const autocompleteList = $('[role="listbox"], .autocomplete__menu, #defra-search__listbox')
-      const isListDisplayed = await autocompleteList.isDisplayed().catch(() => false)
-      
+      const autocompleteList = $(
+        '[role="listbox"], .autocomplete__menu, #defra-search__listbox'
+      )
+      const isListDisplayed = await autocompleteList
+        .isDisplayed()
+        .catch(() => false)
+
       if (isListDisplayed) {
         // Verify aria attributes are set correctly
         const ariaExpanded = await searchInput.getAttribute('aria-expanded')
@@ -77,24 +91,32 @@ describe('Search Input And Results Verification', () => {
       await browser.pause(500) // Wait for autocomplete dropdown
 
       // Check if autocomplete dropdown appears
-      const autocompleteList = $('[role="listbox"], .autocomplete__menu, #defra-search__listbox')
-      const isListDisplayed = await autocompleteList.isDisplayed().catch(() => false)
-      
+      const autocompleteList = $(
+        '[role="listbox"], .autocomplete__menu, #defra-search__listbox'
+      )
+      const isListDisplayed = await autocompleteList
+        .isDisplayed()
+        .catch(() => false)
+
       if (isListDisplayed) {
         // Try to find and click first suggestion
-        const firstOption = await autocompleteList.$('[role="option"], li:first-child')
+        const firstOption = await autocompleteList.$(
+          '[role="option"], li:first-child'
+        )
         const optionExists = await firstOption.isExisting()
-        
+
         if (optionExists) {
           await firstOption.click()
           await browser.pause(500)
-          
+
           // Should navigate directly to the page (not /search)
           const currentUrl = await browser.getUrl()
           expect(currentUrl).not.toMatch(/\/search/)
         }
       } else {
-        console.log('      ℹ️  Autocomplete dropdown not available - skipping dropdown selection test')
+        console.log(
+          '      ℹ️  Autocomplete dropdown not available - skipping dropdown selection test'
+        )
       }
     })
 
@@ -102,10 +124,10 @@ describe('Search Input And Results Verification', () => {
       await browser.url('/')
       const searchInput = $('#defra-search')
       const searchButton = $('button[type="submit"][aria-label*="Search"]')
-      
+
       await searchInput.setValue('a') // Single letter - no dropdown
       await searchButton.click()
-      
+
       await expect(browser).toHaveUrl(/\/search/)
     })
 
@@ -113,7 +135,7 @@ describe('Search Input And Results Verification', () => {
       await browser.url('/')
       const searchButton = $('button[type="submit"][aria-label*="Search"]')
       await searchButton.click()
-      
+
       await expect(browser).toHaveUrl(/\/search/)
       const source = await browser.getPageSource()
       expect(source).not.toMatch(/Internal Server Error|500|Application error/i)
@@ -130,17 +152,17 @@ describe('Search Input And Results Verification', () => {
       await browser.url('/')
       const searchInput = $('#defra-search')
       const searchButton = $('button[type="submit"][aria-label*="Search"]')
-      
+
       await searchInput.setValue('accessibility')
       await searchButton.click()
       await browser.pause(500)
-      
+
       await expect(browser).toHaveUrl(/\/search.*q=accessibility/i)
-      
+
       // Verify result count is displayed
       const source = await browser.getPageSource()
       expect(source).toMatch(/<strong>\d+<\/strong>\s+results?\s+found/i)
-      
+
       // Verify at least one result is shown
       const firstResult = $('.defra-search-results__item h2 a')
       await expect(firstResult).toBeDisplayed()
@@ -150,15 +172,15 @@ describe('Search Input And Results Verification', () => {
       await browser.url('/')
       const searchInput = $('#defra-search')
       const searchButton = $('button[type="submit"][aria-label*="Search"]')
-      
+
       // Use single letter 's' to avoid dropdown
       await searchInput.setValue('s')
       await searchButton.click()
       await browser.pause(500)
-      
+
       const results = await $$('.defra-search-results__item')
       expect(results.length).toBeGreaterThan(0)
-      
+
       // At least one result should link to /sustainability
       const links = await $$('.defra-search-results__item h2 a')
       let hasSustainabilityLink = false
@@ -169,7 +191,7 @@ describe('Search Input And Results Verification', () => {
           break
         }
       }
-      
+
       expect(hasSustainabilityLink).toBe(true)
     })
 
@@ -177,15 +199,15 @@ describe('Search Input And Results Verification', () => {
       await browser.url('/')
       const searchInput = $('#defra-search')
       const searchButton = $('button[type="submit"][aria-label*="Search"]')
-      
+
       // Use single letter 'r' to avoid dropdown
       await searchInput.setValue('r')
       await searchButton.click()
       await browser.pause(500)
-      
+
       const firstResult = $('.defra-search-results__item h2 a')
       await expect(firstResult).toBeDisplayed()
-      
+
       // Just verify we got results
       const results = await $$('.defra-search-results__item')
       expect(results.length).toBeGreaterThan(0)
@@ -195,16 +217,16 @@ describe('Search Input And Results Verification', () => {
       await browser.url('/')
       const searchInput = $('#defra-search')
       const searchButton = $('button[type="submit"][aria-label*="Search"]')
-      
+
       await searchInput.setValue('a')
       await searchButton.click()
       await browser.pause(500)
-      
+
       await expect(browser).toHaveUrl(/\/search/)
-      
+
       const source = await browser.getPageSource()
       expect(source).not.toMatch(/Internal Server Error|500|Application error/i)
-      
+
       // Should show results
       const results = await $$('.defra-search-results__item')
       expect(results.length).toBeGreaterThan(0)
@@ -214,16 +236,16 @@ describe('Search Input And Results Verification', () => {
       await browser.url('/')
       const searchInput = $('#defra-search')
       const searchButton = $('button[type="submit"][aria-label*="Search"]')
-      
+
       // Use single letter 'd' to avoid dropdown
       await searchInput.setValue('d')
       await searchButton.click()
       await browser.pause(500)
-      
+
       // Verify we got results
       const results = await $$('.defra-search-results__item h2 a')
       expect(results.length).toBeGreaterThan(0)
-      
+
       // Check if any result links to /delivery-groups
       let hasDeliveryGroupsLink = false
       for (const link of results) {
@@ -233,10 +255,12 @@ describe('Search Input And Results Verification', () => {
           break
         }
       }
-      
+
       // Note: This might be false if delivery-groups pages aren't in the search index yet
       if (!hasDeliveryGroupsLink) {
-        console.log('      ℹ️  No delivery-groups pages found in search results for "d"')
+        console.log(
+          '      ℹ️  No delivery-groups pages found in search results for "d"'
+        )
       }
     })
   })
@@ -250,23 +274,23 @@ describe('Search Input And Results Verification', () => {
       await browser.url('/')
       const searchInput = $('#defra-search')
       const searchButton = $('button[type="submit"][aria-label*="Search"]')
-      
+
       // Use single letter to avoid dropdown
       await searchInput.setValue('a')
       await searchButton.click()
       await browser.pause(500)
-      
+
       const firstResultItem = $('.defra-search-results__item')
       await expect(firstResultItem).toBeDisplayed()
-      
+
       // Each result should have a heading with link
       const title = await firstResultItem.$('h2 a')
       await expect(title).toBeDisplayed()
-      
+
       // Check if description exists (some results might not have one)
       const description = await firstResultItem.$('.govuk-body')
       const descriptionExists = await description.isExisting()
-      
+
       if (descriptionExists) {
         const descText = await description.getText()
         expect(descText.length).toBeGreaterThan(0)
@@ -280,15 +304,17 @@ describe('Search Input And Results Verification', () => {
       await browser.url('/')
       const searchInput = $('#defra-search')
       const searchButton = $('button[type="submit"][aria-label*="Search"]')
-      
+
       // Use single letter to avoid dropdown
       await searchInput.setValue('a')
       await searchButton.click()
       await browser.pause(500)
-      
-      const sectionLabel = $('.defra-search-results__item .govuk-body-s.defra-search-results__section')
+
+      const sectionLabel = $(
+        '.defra-search-results__item .govuk-body-s.defra-search-results__section'
+      )
       const hasSectionLabel = await sectionLabel.isExisting()
-      
+
       if (hasSectionLabel) {
         const sectionText = await sectionLabel.getText()
         expect(sectionText.length).toBeGreaterThan(0)
@@ -299,24 +325,24 @@ describe('Search Input And Results Verification', () => {
       await browser.url('/')
       const searchInput = $('#defra-search')
       const searchButton = $('button[type="submit"][aria-label*="Search"]')
-      
+
       // Use single letter to avoid dropdown
       await searchInput.setValue('a')
       await searchButton.click()
       await browser.pause(500)
-      
+
       const firstLink = $('.defra-search-results__item h2 a')
       const href = await firstLink.getAttribute('href')
-      
+
       await firstLink.click()
       await browser.pause(500)
-      
+
       const currentUrl = await browser.getUrl()
-      
+
       // Normalize both URLs - replace backslashes with forward slashes
       const normalizedHref = href.replaceAll('\\', '/')
       const normalizedUrl = currentUrl.replaceAll('\\', '/')
-      
+
       expect(normalizedUrl).toContain(normalizedHref)
     })
   })
@@ -330,14 +356,14 @@ describe('Search Input And Results Verification', () => {
       await browser.url('/')
       const searchInput = $('#defra-search')
       const searchButton = $('button[type="submit"][aria-label*="Search"]')
-      
+
       await searchInput.setValue('o')
       await searchButton.click()
       await browser.pause(500)
-      
+
       const source = await browser.getPageSource()
       const match = source.match(/<strong>(\d+)<\/strong>\s+results?\s+found/i)
-      
+
       expect(match).not.toBeNull()
       const resultCount = Number.parseInt(match[1])
       expect(resultCount).toBeGreaterThan(0)
@@ -347,11 +373,11 @@ describe('Search Input And Results Verification', () => {
       await browser.url('/')
       const searchInput = $('#defra-search')
       const searchButton = $('button[type="submit"][aria-label*="Search"]')
-      
+
       await searchInput.setValue('the')
       await searchButton.click()
       await browser.pause(500)
-      
+
       const results = await $$('.defra-search-results__item')
       expect(results.length).toBeLessThanOrEqual(20)
     })
@@ -360,23 +386,27 @@ describe('Search Input And Results Verification', () => {
       await browser.url('/')
       const searchInput = $('#defra-search')
       const searchButton = $('button[type="submit"][aria-label*="Search"]')
-      
+
       await searchInput.setValue('o')
       await searchButton.click()
       await browser.pause(500)
-      
+
       const source = await browser.getPageSource()
       const match = source.match(/<strong>(\d+)<\/strong>\s+results?\s+found/i)
-      
+
       if (match && Number.parseInt(match[1]) > 20) {
         // Check for pagination controls
-        const pagination = await $('[class*="pagination"], nav[aria-label*="pagination"], .govuk-pagination').isExisting()
-        
+        const pagination = await $(
+          '[class*="pagination"], nav[aria-label*="pagination"], .govuk-pagination'
+        ).isExisting()
+
         if (!pagination) {
           // Known issue: pagination is missing
-          console.log('      ⚠️  KNOWN ISSUE: No pagination controls found despite >20 results')
+          console.log(
+            '      ⚠️  KNOWN ISSUE: No pagination controls found despite >20 results'
+          )
         }
-        
+
         // This test documents the expected behavior even if not yet implemented
         // expect(pagination).toBe(true)
       }
@@ -386,19 +416,19 @@ describe('Search Input And Results Verification', () => {
       await browser.url('/')
       const searchInput = $('#defra-search')
       const searchButton = $('button[type="submit"][aria-label*="Search"]')
-      
+
       await searchInput.setValue('service')
       await searchButton.click()
       await browser.pause(500)
-      
+
       const results = await $$('.defra-search-results__item')
       expect(results.length).toBeGreaterThan(0)
-      
+
       // Verify first result has proper structure
       const firstResult = results[0]
       const heading = await firstResult.$('h2.govuk-heading-m')
       const link = await firstResult.$('h2 a.govuk-link')
-      
+
       await expect(heading).toBeDisplayed()
       await expect(link).toBeDisplayed()
     })
@@ -413,41 +443,41 @@ describe('Search Input And Results Verification', () => {
       await browser.url('/')
       let searchInput = $('#defra-search')
       let searchButton = $('button[type="submit"][aria-label*="Search"]')
-      
+
       // First search
       await searchInput.setValue('accessibility')
       await searchButton.click()
       await browser.pause(500)
-      
+
       // Perform new search from results page
       searchInput = $('#defra-search')
       searchButton = $('button[type="submit"][aria-label*="Search"]')
-      
+
       await searchInput.clearValue()
       await searchInput.setValue('security')
       await searchButton.click()
       await browser.pause(500)
-      
+
       // Verify new results loaded
       await expect(browser).toHaveUrl(/\/search.*q=security/i)
       const newSource = await browser.getPageSource()
-      expect(newSource).toMatch(/results?\s+found\s+for\s+<strong>"security"<\/strong>/i)
+      expect(newSource).toMatch(
+        /results?\s+found\s+for\s+<strong>"security"<\/strong>/i
+      )
     })
 
     it('Given I am viewing search results, when the page loads, then the search query is preserved in the input', async () => {
       await browser.url('/')
       const searchInput = $('#defra-search')
       const searchButton = $('button[type="submit"][aria-label*="Search"]')
-      
+
       // Use single letter - won't trigger autocomplete dropdown
       await searchInput.setValue('d')
       await searchButton.click()
       await browser.pause(500)
-      
+
       // Verify we're on search results page
       await expect(browser).toHaveUrl(/\/search/)
-      
- 
     })
   })
 
@@ -459,15 +489,15 @@ describe('Search Input And Results Verification', () => {
     // it('Given I use the search input, when I inspect ARIA attributes, then proper roles and labels are present', async () => {
     //   await browser.url('/')
     //   const searchInput = $('#defra-search')
-      
+
     //   // Check for ARIA attributes
     //   const role = await searchInput.getAttribute('role')
     //   const ariaLabel = await searchInput.getAttribute('aria-label')
     //   const ariaDescribedBy = await searchInput.getAttribute('aria-describedby')
-      
+
     //   // Input should have combobox role for autocomplete
     //   expect(role).toBe('combobox')
-      
+
     //   // Should have aria-describedby or aria-label for screen readers
     //   expect(ariaDescribedBy || ariaLabel).toBeTruthy()
     // })
@@ -476,18 +506,18 @@ describe('Search Input And Results Verification', () => {
       await browser.url('/')
       const searchInput = $('#defra-search')
       const searchButton = $('button[type="submit"][aria-label*="Search"]')
-      
+
       await searchInput.setValue('accessibility')
       await searchButton.click()
       await browser.pause(500)
-      
+
       const mainContent = $('main#main-content')
       await expect(mainContent).toBeDisplayed()
-      
+
       const heading = $('h1.govuk-heading-xl')
       const headingText = await heading.getText()
       expect(headingText).toBe('Search results')
-      
+
       // Result items should have proper heading hierarchy
       const resultHeadings = await $$('.defra-search-results__item h2')
       expect(resultHeadings.length).toBeGreaterThan(0)
@@ -495,13 +525,13 @@ describe('Search Input And Results Verification', () => {
 
     it('Given I view the search page, when inspecting the form, then it has proper semantic markup', async () => {
       await browser.url('/')
-      
+
       const searchForm = $('form[role="search"]')
       await expect(searchForm).toBeExisting()
-      
+
       const action = await searchForm.getAttribute('action')
       expect(action).toBe('/search')
-      
+
       const method = await searchForm.getAttribute('method')
       expect(method).toBe('get')
     })

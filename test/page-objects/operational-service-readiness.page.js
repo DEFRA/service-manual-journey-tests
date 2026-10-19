@@ -24,7 +24,9 @@ class OperationalServiceReadinessPage extends Page {
   }
 
   open() {
-    return super.open('/delivery-groups/follow-delivery-governance/assurance/operational-service-readiness')
+    return super.open(
+      '/delivery-groups/follow-delivery-governance/assurance/operational-service-readiness'
+    )
   }
 
   async clickOtherAssuranceLink() {

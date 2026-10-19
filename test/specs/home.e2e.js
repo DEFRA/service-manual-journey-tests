@@ -39,11 +39,11 @@ describe('Home page', () => {
     // Scroll to bottom
     await browser.execute(() => window.scrollTo(0, document.body.scrollHeight))
     await browser.pause(300)
-    
+
     // Scroll back to top to make tiles visible
     await browser.execute(() => window.scrollTo(0, 0))
     await browser.pause(300)
-    
+
     // Now verify tiles are visible in viewport
     await expect(HomePage.serviceManualTile).toBeDisplayedInViewport()
     await expect(HomePage.deliveryGroupsTile).toBeDisplayedInViewport()
@@ -52,11 +52,11 @@ describe('Home page', () => {
   it('Should detect missing or unexpected links and show a helpful error', async function () {
     const links = await $$('main .defra-tile__link')
     const count = links.length
-    
+
     // Validate error handling - if count is correct (2), verify no error element exists
     const err = await $('#root-links-error')
     const errorExists = await err.isExisting()
-    
+
     if (count === 2) {
       // If we have exactly 2 links, there should be NO error element
       expect(errorExists).toBe(false)
@@ -64,7 +64,7 @@ describe('Home page', () => {
       // If count is wrong, error element should exist and show appropriate message
       if (errorExists) {
         await expect(err).toBeDisplayed()
-        
+
         if (count < 2) {
           await expect(err).toHaveText(/Required links are missing/)
         } else if (count > 2) {
@@ -72,7 +72,9 @@ describe('Home page', () => {
         }
       } else {
         // Error element doesn't exist - log for debugging
-        console.log(`      ⚠️  Expected error element #root-links-error not found. Link count: ${count}`)
+        console.log(
+          `      ⚠️  Expected error element #root-links-error not found. Link count: ${count}`
+        )
       }
     }
   })

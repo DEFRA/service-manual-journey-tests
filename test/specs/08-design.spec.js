@@ -15,7 +15,13 @@ describe('Design System And Tools Verification', () => {
       if (l.level !== 'SEVERE') return false
       const msg = (l.message || '').toString()
       if (/favicon/i.test(msg)) return false
-      if (/Failed to load resource: the server responded with a status of 404/i.test(msg) && /images\//i.test(msg)) return false
+      if (
+        /Failed to load resource: the server responded with a status of 404/i.test(
+          msg
+        ) &&
+        /images\//i.test(msg)
+      )
+        return false
       if (/this-page-does-not-exist-404/i.test(msg)) return false
       return true
     })
@@ -98,7 +104,11 @@ describe('Design System And Tools Verification', () => {
       // HTTP status check
       const status = await browser.executeAsync(async (done) => {
         try {
-          const res = await fetch(globalThis.location.href, { method: 'GET', cache: 'no-store', redirect: 'manual' })
+          const res = await fetch(globalThis.location.href, {
+            method: 'GET',
+            cache: 'no-store',
+            redirect: 'manual'
+          })
           done(res.status)
         } catch (err) {
           // eslint-disable-next-line no-console
@@ -156,7 +166,9 @@ describe('Design System And Tools Verification', () => {
     if (!radioExists) {
       // If analytics section is not present (GTM not configured), skip this test
       // eslint-disable-next-line no-console
-      console.warn('Analytics radios not found; skipping cookie save test (GTM may not be configured)')
+      console.warn(
+        'Analytics radios not found; skipping cookie save test (GTM may not be configured)'
+      )
       return
     }
     await CookiesPage.acceptCookies()
@@ -243,10 +255,14 @@ describe('Design System And Tools Verification', () => {
     await expect($('main h1')).toBeDisplayed()
 
     // Locate the exact backlog link from the numbered list
-    const backlogLink = await $('a[href="https://design-system.service.gov.uk/community/backlog/"]')
+    const backlogLink = await $(
+      'a[href="https://design-system.service.gov.uk/community/backlog/"]'
+    )
     await expect(backlogLink).toBeDisplayed()
     const linkText = await backlogLink.getText()
-    expect(linkText).toMatch(/See if it is being worked on by other teams across government/i)
+    expect(linkText).toMatch(
+      /See if it is being worked on by other teams across government/i
+    )
 
     // Confirm the link is marked to open in a new tab
     const target = await backlogLink.getAttribute('target')
@@ -258,13 +274,17 @@ describe('Design System And Tools Verification', () => {
 
     // Wait for new tab to appear
     await browser.waitUntil(
-      async () => (await browser.getWindowHandles()).length > handlesBefore.length,
-      { timeout: 8000, timeoutMsg: 'A new tab did not open after clicking the backlog link' }
+      async () =>
+        (await browser.getWindowHandles()).length > handlesBefore.length,
+      {
+        timeout: 8000,
+        timeoutMsg: 'A new tab did not open after clicking the backlog link'
+      }
     )
 
     // Switch to the newly opened tab
     const handlesAfter = await browser.getWindowHandles()
-    const newTab = handlesAfter.find(h => !handlesBefore.includes(h))
+    const newTab = handlesAfter.find((h) => !handlesBefore.includes(h))
     await browser.switchToWindow(newTab)
 
     // Wrap all new-tab assertions in try/finally so the tab is always closed,
@@ -284,19 +304,23 @@ describe('Design System And Tools Verification', () => {
       // 1. Verify the page is not a 404 / archived / error page
       const pageTitle = await browser.getTitle()
       const pageH1 = await $('h1')
-      const h1Text = await pageH1.isExisting() ? await pageH1.getText() : ''
+      const h1Text = (await pageH1.isExisting()) ? await pageH1.getText() : ''
       expect(pageTitle).not.toMatch(/404|page not found|not found|archived/i)
       expect(h1Text).not.toMatch(/404|page not found|not found|archived/i)
 
       // 2. Verify the page URL is the expected GOV.UK Design System backlog page
       //    and that the URL itself does not indicate the page was archived or removed
       const currentUrl = await browser.getUrl()
-      expect(currentUrl).toMatch(/design-system\.service\.gov\.uk\/community\/backlog/i)
+      expect(currentUrl).toMatch(
+        /design-system\.service\.gov\.uk\/community\/backlog/i
+      )
       expect(currentUrl).not.toMatch(/404|not-found|archived|removed|gone/i)
 
       // 3. Verify the page body content does not indicate an archived or removed page
       const bodyText = await $('body').getText()
-      expect(bodyText).not.toMatch(/this page has been archived|page not found|no longer available|page has been removed|410|404/i)
+      expect(bodyText).not.toMatch(
+        /this page has been archived|page not found|no longer available|page has been removed|410|404/i
+      )
 
       // 4. Verify there is a way to "add your findings" — the backlog uses GitHub issues
       //    Look for GitHub links anywhere in the page (each backlog entry links to a GitHub issue)

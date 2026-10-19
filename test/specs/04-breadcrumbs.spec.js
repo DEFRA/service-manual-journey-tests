@@ -8,7 +8,13 @@ describe('Breadcrumb Navigation And Back Link Verification', () => {
         if (l.level !== 'SEVERE') return false
         const msg = (l.message || '').toString()
         if (/favicon/i.test(msg)) return false
-        if (/Failed to load resource: the server responded with a status of 404/i.test(msg) && /images\//i.test(msg)) return false
+        if (
+          /Failed to load resource: the server responded with a status of 404/i.test(
+            msg
+          ) &&
+          /images\//i.test(msg)
+        )
+          return false
         // Ignore 404s for interruption-card targetUrl external resources
         if (/portal\.cdp-int\.defra\.cloud/i.test(msg)) return false
         return true
@@ -37,7 +43,9 @@ describe('Breadcrumb Navigation And Back Link Verification', () => {
 
   it('Given I am on /accessibility, when I click the "Digital service manual" breadcrumb, then I navigate to /service-manual', async () => {
     await browser.url('/accessibility')
-    const serviceManualCrumb = $('a.govuk-breadcrumbs__link[href="/service-manual"]')
+    const serviceManualCrumb = $(
+      'a.govuk-breadcrumbs__link[href="/service-manual"]'
+    )
     await expect(serviceManualCrumb).toBeDisplayed()
     await serviceManualCrumb.waitForClickable()
     await serviceManualCrumb.click()
@@ -58,11 +66,15 @@ describe('Breadcrumb Navigation And Back Link Verification', () => {
   // ─── Back link (govuk-back-link on interruption-card page) ────────────────────
   it('Given I am on /architecture-and-software-development and click the "Core Delivery Platform" link, When I navigate to the CDP page, Then after clicking on "Back" link should navigate me back to /architecture-and-software-development', async () => {
     // Navigate to the Core Delivery Platform page
-    await browser.url('/architecture-and-software-development/core-delivery-platform')
+    await browser.url(
+      '/architecture-and-software-development/core-delivery-platform'
+    )
 
     // Find the "Core Delivery Platform" inline link rendered by markdown filter
     // href="/interruption-card?targetUrl=https%3A%2F%2Fportal.cdp-int.defra.cloud%2F"
-    const cdpLink = $('a[href="/interruption-card?targetUrl=https%3A%2F%2Fportal.cdp-int.defra.cloud%2F"]')
+    const cdpLink = $(
+      'a[href="/interruption-card?targetUrl=https%3A%2F%2Fportal.cdp-int.defra.cloud%2F"]'
+    )
     await expect(cdpLink).toBeDisplayed()
 
     // Click the link to navigate to interruption-card page
@@ -86,10 +98,14 @@ describe('Breadcrumb Navigation And Back Link Verification', () => {
 
   it('Given I am on the interruption-card page via CDP link, When the page loads, Then I should see the warning message about internal service access and a Continue button linking to the CDP portal', async () => {
     // Navigate to the Core Delivery Platform page first
-    await browser.url('/architecture-and-software-development/core-delivery-platform')
+    await browser.url(
+      '/architecture-and-software-development/core-delivery-platform'
+    )
 
     // Click the "Core Delivery Platform" inline link that routes through the interruption-card
-    const cdpLink = $('a[href="/interruption-card?targetUrl=https%3A%2F%2Fportal.cdp-int.defra.cloud%2F"]')
+    const cdpLink = $(
+      'a[href="/interruption-card?targetUrl=https%3A%2F%2Fportal.cdp-int.defra.cloud%2F"]'
+    )
     await expect(cdpLink).toBeDisplayed()
     await cdpLink.scrollIntoView()
     await cdpLink.click()
@@ -135,7 +151,6 @@ describe('Breadcrumb Navigation And Back Link Verification', () => {
     }
   })
 
-
   it('Given I am on /service-manual, when I view the service nav bar, then all top-level links are visible', async () => {
     await browser.setWindowSize(1280, 800)
     await browser.url('/service-manual')
@@ -151,7 +166,9 @@ describe('Breadcrumb Navigation And Back Link Verification', () => {
   it('Given I am on /service-manual, when I click the "Service assessments" nav link, then I navigate to /service-assessments', async () => {
     await browser.setWindowSize(1280, 800)
     await browser.url('/service-manual')
-    const link = $('nav.defra-service-navigation a[href="/service-assessments"]')
+    const link = $(
+      'nav.defra-service-navigation a[href="/service-assessments"]'
+    )
     await expect(link).toBeDisplayed()
     await link.waitForClickable()
     await link.click()
