@@ -8,7 +8,9 @@ describe('Verify Follow Delivery Governance', () => {
   it('Given I am on the Follow Delivery Governance page at /delivery-groups/follow-delivery-governance, When the page loads, Then I should see the main heading and links to "Governance model" and "Assurance" subpages', async () => {
     await FollowDeliveryGovernancePage.open()
     await expect(FollowDeliveryGovernancePage.mainHeading).toBeDisplayed()
-    await expect(FollowDeliveryGovernancePage.governanceModelLink).toBeDisplayed()
+    await expect(
+      FollowDeliveryGovernancePage.governanceModelLink
+    ).toBeDisplayed()
     await expect(FollowDeliveryGovernancePage.assuranceLink).toBeDisplayed()
   })
 

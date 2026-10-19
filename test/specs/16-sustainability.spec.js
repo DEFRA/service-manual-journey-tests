@@ -14,7 +14,13 @@ describe('Sustainability Guidance Verification', () => {
         if (l.level !== 'SEVERE') return false
         const msg = (l.message || '').toString()
         if (/favicon/i.test(msg)) return false
-        if (/Failed to load resource: the server responded with a status of 404/i.test(msg) && /images\//i.test(msg)) return false
+        if (
+          /Failed to load resource: the server responded with a status of 404/i.test(
+            msg
+          ) &&
+          /images\//i.test(msg)
+        )
+          return false
         if (/this-page-does-not-exist-404/i.test(msg)) return false
         return true
       })
@@ -64,8 +70,12 @@ describe('Sustainability Guidance Verification', () => {
 
     // RAG ratings are plain text td cells — no CSS tag classes used on this page
     const total = await browser.execute(() => {
-      const cells = Array.from(document.querySelectorAll('main .govuk-table__cell'))
-      return cells.filter((c) => /^(Green|Amber|Red)$/i.test(c.textContent.trim())).length
+      const cells = Array.from(
+        document.querySelectorAll('main .govuk-table__cell')
+      )
+      return cells.filter((c) =>
+        /^(Green|Amber|Red)$/i.test(c.textContent.trim())
+      ).length
     })
     expect(total).toBeGreaterThan(0)
 
@@ -105,7 +115,9 @@ describe('Sustainability Guidance Verification', () => {
     const navText = await subNav.getText()
     expect(navText).toMatch(/Deliver a sustainable service/i)
     expect(navText).toMatch(/Assess risks and record sustainability actions/i)
-    expect(navText).toMatch(/Taking action and tracking sustainability performance/i)
+    expect(navText).toMatch(
+      /Taking action and tracking sustainability performance/i
+    )
   })
 
   // ─── Objectives subpage (from 66-sustainability-objectives.spec.js) ───────

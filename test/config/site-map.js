@@ -10,8 +10,8 @@
  * - Expected content types
  */
 
-export const siteConfig = {    
-  baseUrl: process.env.ENVIRONMENT 
+export const siteConfig = {
+  baseUrl: process.env.ENVIRONMENT
     ? `https://service-manual-ui.${process.env.ENVIRONMENT}.cdp-int.defra.cloud`
     : 'http://localhost:3000',
   //  Request configuration
@@ -37,20 +37,20 @@ export const siteConfig = {
   // Domains to exclude from link checking (authentication-required or external)
   // Add domains that require VPN, authentication, or should be skipped
   excludeDomains: [
-    /github\.com/i,                    // GitHub (may require auth)
-    /gitlab\.com/i,                    // GitLab (may require auth)
-    /vpn\./i,                          // VPN URLs
-    /intranet\./i,                     // Intranet URLs
-    /confluence\./i,                   // Confluence (usually requires auth)
-    /jira\./i,                         // Jira (usually requires auth)
-    /sharepoint\./i,                   // SharePoint (usually requires auth)
-    /teams\.microsoft\.com/i,          // Microsoft Teams
-    /login\./i,                        // Login pages
-    /auth\./i,                         // Auth pages
-    /sso\./i,                          // SSO pages
-    /portal\.cdp-int\.defra\.cloud/i,  // CDP portal (requires VPN)
+    /github\.com/i, // GitHub (may require auth)
+    /gitlab\.com/i, // GitLab (may require auth)
+    /vpn\./i, // VPN URLs
+    /intranet\./i, // Intranet URLs
+    /confluence\./i, // Confluence (usually requires auth)
+    /jira\./i, // Jira (usually requires auth)
+    /sharepoint\./i, // SharePoint (usually requires auth)
+    /teams\.microsoft\.com/i, // Microsoft Teams
+    /login\./i, // Login pages
+    /auth\./i, // Auth pages
+    /sso\./i, // SSO pages
+    /portal\.cdp-int\.defra\.cloud/i, // CDP portal (requires VPN)
     /defra-digital-team\.slack\.com/i, // Slack (requires auth)
-    /eaflood\.atlassian\.net/i         // Jira (requires auth)
+    /eaflood\.atlassian\.net/i // Jira (requires auth)
     // Add more domains as needed, e.g.:
     // /example\.com/i,
     // /internal\.company\.com/i

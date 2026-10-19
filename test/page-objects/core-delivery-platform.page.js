@@ -20,7 +20,9 @@ class CoreDeliveryPlatformPage extends Page {
   }
 
   open() {
-    return super.open('/architecture-and-software-development/core-delivery-platform')
+    return super.open(
+      '/architecture-and-software-development/core-delivery-platform'
+    )
   }
 
   async getCdpPortalLinkHref() {

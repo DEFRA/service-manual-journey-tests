@@ -14,7 +14,13 @@ describe('User Research Content Verification', () => {
       if (l.level !== 'SEVERE') return false
       const msg = (l.message || '').toString()
       if (/favicon/i.test(msg)) return false
-      if (/Failed to load resource: the server responded with a status of 404/i.test(msg) && /images\//i.test(msg)) return false
+      if (
+        /Failed to load resource: the server responded with a status of 404/i.test(
+          msg
+        ) &&
+        /images\//i.test(msg)
+      )
+        return false
       if (/this-page-does-not-exist-404/i.test(msg)) return false
       return true
     })
@@ -36,10 +42,14 @@ describe('User Research Content Verification', () => {
     const navText = await subNav.getText()
     expect(navText).toMatch(/Standards, guidance and tools/i)
     expect(navText).toMatch(/Research process/i)
-    await expect($('a[href="/user-research/standards-and-guidance"]')).toBeDisplayed()
+    await expect(
+      $('a[href="/user-research/standards-and-guidance"]')
+    ).toBeDisplayed()
     await expect($('a[href="/user-research/tools"]')).toBeDisplayed()
     await expect($('a[href="/user-research/scoping-research"]')).toBeDisplayed()
-    await expect($('a[href="/user-research/recruiting-participants"]')).toBeDisplayed()
+    await expect(
+      $('a[href="/user-research/recruiting-participants"]')
+    ).toBeDisplayed()
   })
 
   // P1-81: Support box with contact details
@@ -49,7 +59,9 @@ describe('User Research Content Verification', () => {
     await expect(supportBox).toBeDisplayed()
     const boxText = await supportBox.getText()
     expect(boxText).toMatch(/user research operations/i)
-    await expect($('a[href="mailto:DefraDDTSUserResearchOperations@defra.gov.uk"]')).toBeDisplayed()
+    await expect(
+      $('a[href="mailto:DefraDDTSUserResearchOperations@defra.gov.uk"]')
+    ).toBeDisplayed()
   })
 
   // P1-82: Main content panel
@@ -72,7 +84,8 @@ describe('User Research Content Verification', () => {
       {
         href: '/user-research/standards-and-guidance',
         heading: /Standards and guidance/i,
-        content: /MRS|code of conduct|GDS|Service Standard|Ethics|Data handling/i
+        content:
+          /MRS|code of conduct|GDS|Service Standard|Ethics|Data handling/i
       },
       {
         href: '/user-research/tools',
@@ -133,7 +146,9 @@ describe('User Research Content Verification', () => {
   it('Given I am on /user-research/standards-and-guidance, when the page loads, then MRS Code of Conduct, GDS guidance, ethics, and data handling content with external links is shown', async () => {
     await UserResearchStandardsPage.open()
     await expect(UserResearchStandardsPage.mainHeading).toBeDisplayed()
-    await expect(UserResearchStandardsPage.mainHeading).toHaveText(/Standards and guidance/i)
+    await expect(UserResearchStandardsPage.mainHeading).toHaveText(
+      /Standards and guidance/i
+    )
     const content = await $('main').getText()
     expect(content).toMatch(/MRS|code of conduct/i)
     expect(content).toMatch(/GDS|Service Standard/i)
@@ -162,7 +177,9 @@ describe('User Research Content Verification', () => {
   it('Given I am on /user-research/scoping-research, when the page loads, then scoping workshop, research plan, and stakeholder guidance is shown', async () => {
     await UserResearchScopingPage.open()
     await expect(UserResearchScopingPage.mainHeading).toBeDisplayed()
-    await expect(UserResearchScopingPage.mainHeading).toHaveText(/Research scoping and planning/i)
+    await expect(UserResearchScopingPage.mainHeading).toHaveText(
+      /Research scoping and planning/i
+    )
     const content = await UserResearchScopingPage.pageContent.getText()
     expect(content).toMatch(/scoping workshop/i)
     expect(content).toMatch(/research plan/i)
@@ -176,7 +193,9 @@ describe('User Research Content Verification', () => {
   it('Given I am on /user-research/recruiting-participants, when the page loads, then recruitment, screening, consent, and diversity guidance is shown', async () => {
     await UserResearchRecruitingPage.open()
     await expect(UserResearchRecruitingPage.mainHeading).toBeDisplayed()
-    await expect(UserResearchRecruitingPage.mainHeading).toHaveText(/Participant recruitment/i)
+    await expect(UserResearchRecruitingPage.mainHeading).toHaveText(
+      /Participant recruitment/i
+    )
     const content = await UserResearchRecruitingPage.pageContent.getText()
     expect(content).toMatch(/recruitment/i)
     expect(content).toMatch(/screen|screener/i)

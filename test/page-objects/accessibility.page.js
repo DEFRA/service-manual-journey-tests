@@ -8,19 +8,19 @@ class AccessibilityPage extends Page {
   }
 
   get sectionNav() {
-  return $('nav.app-sub-navigation')
+    return $('nav.app-sub-navigation')
   }
 
   get sectionNavItems() {
-  return $$('nav.app-sub-navigation a')
+    return $$('nav.app-sub-navigation a')
   }
 
   get manageAccessibilityLink() {
-  return $('a[href="/accessibility/manage-accessibility"]')
+    return $('a[href="/accessibility/manage-accessibility"]')
   }
 
   get testForAccessibilityLink() {
-  return $('a[href="/accessibility/test-for-accessibility"]')
+    return $('a[href="/accessibility/test-for-accessibility"]')
   }
 
   open() {

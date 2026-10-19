@@ -13,7 +13,10 @@ const contentPages = [
   { path: '/design', titlePattern: /Design/i },
   { path: '/user-research', titlePattern: /User research/i },
   { path: '/content', titlePattern: /Content/i },
-  { path: '/sustainability', titlePattern: /15. Deliver a sustainable service/i },
+  {
+    path: '/sustainability',
+    titlePattern: /15. Deliver a sustainable service/i
+  },
   { path: '/service-assessments', titlePattern: /Service assessments/i },
   {
     path: '/testing-and-assurance',
@@ -79,7 +82,10 @@ const contentPages = [
   { path: '/design/data-visualisation', titlePattern: /Data visualisation/i },
   { path: '/design/prototyping', titlePattern: /Prototyping/i },
   { path: '/design/tools', titlePattern: /Tools/i },
-  { path: '/design/components-and-patterns', titlePattern: /Components and patterns/i },
+  {
+    path: '/design/components-and-patterns',
+    titlePattern: /Components and patterns/i
+  },
 
   // User Research sub-pages
   {
@@ -155,7 +161,11 @@ const contentPages = [
     path: '/sustainability/process',
     titlePattern: /Assess risks and record sustainability actions/i
   },
-  { path: '/sustainability/metrics', titlePattern: /Taking action and tracking sustainability performance through the Agile lifecycle/i },
+  {
+    path: '/sustainability/metrics',
+    titlePattern:
+      /Taking action and tracking sustainability performance through the Agile lifecycle/i
+  },
 
   // Product & Delivery sub-pages
   { path: '/product-and-delivery/governance', titlePattern: /Governance/i },

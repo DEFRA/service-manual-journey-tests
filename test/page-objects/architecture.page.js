@@ -16,11 +16,15 @@ class ArchitecturePage extends Page {
   }
 
   get coreDeliveryPlatformLink() {
-    return $('a[href="/architecture-and-software-development/core-delivery-platform"]')
+    return $(
+      'a[href="/architecture-and-software-development/core-delivery-platform"]'
+    )
   }
 
   get defraCustomerIdentityLink() {
-    return $('a[href="/architecture-and-software-development/defra-customer-identity"]')
+    return $(
+      'a[href="/architecture-and-software-development/defra-customer-identity"]'
+    )
   }
 
   get defraFormsLink() {
@@ -28,7 +32,9 @@ class ArchitecturePage extends Page {
   }
 
   get defraInteractiveMapLink() {
-    return $('a[href="/architecture-and-software-development/defra-accessible-maps"]')
+    return $(
+      'a[href="/architecture-and-software-development/defra-accessible-maps"]'
+    )
   }
 
   get pageContent() {

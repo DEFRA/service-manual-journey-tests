@@ -14,18 +14,21 @@ class DeliveryGroupsPage extends Page {
   get followGovernanceTile() {
     return $('a[href="https://defra.github.io/delivery-group-governance/"]')
   }
-  
 
   get meetStandardsTile() {
     return $('a[href="/delivery-groups/meet-delivery-standards"]')
   }
 
   get followGovernanceTileBody() {
-    return $('//a[contains(normalize-space(.),"Follow delivery governance")]/ancestor::div[contains(@class,"defra-tile")]//p')
+    return $(
+      '//a[contains(normalize-space(.),"Follow delivery governance")]/ancestor::div[contains(@class,"defra-tile")]//p'
+    )
   }
 
   get meetStandardsTileBody() {
-    return $('//a[contains(normalize-space(.),"Meet delivery standards")]/ancestor::div[contains(@class,"defra-tile")]//p')
+    return $(
+      '//a[contains(normalize-space(.),"Meet delivery standards")]/ancestor::div[contains(@class,"defra-tile")]//p'
+    )
   }
 
   open() {

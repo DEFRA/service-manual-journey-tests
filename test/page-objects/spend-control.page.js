@@ -24,7 +24,9 @@ class SpendControlPage extends Page {
   }
 
   open() {
-    return super.open('/delivery-groups/follow-delivery-governance/assurance/spend-control')
+    return super.open(
+      '/delivery-groups/follow-delivery-governance/assurance/spend-control'
+    )
   }
 
   async getSectionNavLinkTexts() {

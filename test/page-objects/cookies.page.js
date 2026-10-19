@@ -8,15 +8,15 @@ class CookiesPage extends Page {
   }
 
   get acceptRadio() {
-  return $('input[name="analytics"][value="yes"]')
+    return $('input[name="analytics"][value="yes"]')
   }
 
   get rejectRadio() {
-  return $('input[name="analytics"][value="no"]')
+    return $('input[name="analytics"][value="no"]')
   }
 
   get saveButton() {
-  return $('#cookies-form button[type="submit"]')
+    return $('#cookies-form button[type="submit"]')
   }
 
   get successNotification() {
@@ -24,7 +24,7 @@ class CookiesPage extends Page {
   }
 
   get cookieForm() {
-  return $('#cookies-form')
+    return $('#cookies-form')
   }
 
   open() {

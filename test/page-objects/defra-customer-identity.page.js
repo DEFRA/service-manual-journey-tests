@@ -20,7 +20,9 @@ class DefraCustomerIdentityPage extends Page {
   }
 
   open() {
-    return super.open('/architecture-and-software-development/defra-customer-identity')
+    return super.open(
+      '/architecture-and-software-development/defra-customer-identity'
+    )
   }
 
   async getExternalLinkHrefs() {

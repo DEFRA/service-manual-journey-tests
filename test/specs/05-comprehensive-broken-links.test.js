@@ -120,7 +120,7 @@ async function extractLinksFromBrowser(pageUrl) {
 
       if (href) {
         const normalizedUrl = normalizeUrl(href, pageUrl)
-        
+
         if (!normalizedUrl) {
           continue // Skip invalid URLs
         }
@@ -140,7 +140,9 @@ async function extractLinksFromBrowser(pageUrl) {
     }
 
     if (excludedCount > 0) {
-      console.log(`      ℹ Excluded ${excludedCount} links (auth/VPN/file patterns)`)
+      console.log(
+        `      ℹ Excluded ${excludedCount} links (auth/VPN/file patterns)`
+      )
     }
   } catch (error) {
     console.log(`      Warning: Could not extract links - ${error.message}`)
@@ -731,7 +733,7 @@ describe('Broken Link ', () => {
       }
 
       console.log(`\n    Results: ${working} working, ${broken} broken`)
-      
+
       if (broken > 0) {
         console.log(`\n    ❌ BROKEN PAGES IN SERVICE MANUAL SECTION:`)
         brokenPages.forEach((p) => {
@@ -781,7 +783,7 @@ describe('Broken Link ', () => {
       }
 
       console.log(`\n    Results: ${working} working, ${broken} broken`)
-      
+
       if (broken > 0) {
         console.log(`\n    ❌ BROKEN PAGES IN DELIVERY GROUPS SECTION:`)
         brokenPages.forEach((p) => {
@@ -829,7 +831,7 @@ describe('Broken Link ', () => {
       }
 
       console.log(`\n    Results: ${working} working, ${broken} broken`)
-      
+
       if (broken > 0) {
         console.log(`\n    ❌ BROKEN PAGES IN CONTENT SECTION:`)
         brokenPages.forEach((p) => {
@@ -887,7 +889,7 @@ describe('Broken Link ', () => {
       }
 
       console.log(`\n    Results: ${working} working, ${broken} broken`)
-      
+
       if (broken > 0) {
         console.log(`\n    ❌ BROKEN DEEP PAGES (Level 3+):`)
         brokenPages.forEach((p) => {

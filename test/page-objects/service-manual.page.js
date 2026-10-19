@@ -29,11 +29,15 @@ class ServiceManualPage extends Page {
   }
 
   get serviceAssessmentsTileBody() {
-    return $('//a[contains(normalize-space(.),"Service assessments")]/ancestor::div[contains(@class,"defra-tile")]//p')
+    return $(
+      '//a[contains(normalize-space(.),"Service assessments")]/ancestor::div[contains(@class,"defra-tile")]//p'
+    )
   }
 
   get accessibilityTileBody() {
-    return $('//a[contains(normalize-space(.),"Accessibility")]/ancestor::div[contains(@class,"defra-tile")]//p')
+    return $(
+      '//a[contains(normalize-space(.),"Accessibility")]/ancestor::div[contains(@class,"defra-tile")]//p'
+    )
   }
 
   // container used to group the primary hub links under the header
@@ -46,7 +50,9 @@ class ServiceManualPage extends Page {
   }
 
   get userResearchTileBody() {
-    return $('//a[contains(normalize-space(.),"User research")]/ancestor::div[contains(@class,"defra-tile")]//p')
+    return $(
+      '//a[contains(normalize-space(.),"User research")]/ancestor::div[contains(@class,"defra-tile")]//p'
+    )
   }
 
   get contentTile() {
@@ -54,7 +60,9 @@ class ServiceManualPage extends Page {
   }
 
   get contentTileBody() {
-    return $('//a[contains(normalize-space(.),"Content") and contains(@href, "/content")]/ancestor::div[contains(@class,"defra-tile")]//p')
+    return $(
+      '//a[contains(normalize-space(.),"Content") and contains(@href, "/content")]/ancestor::div[contains(@class,"defra-tile")]//p'
+    )
   }
 
   get designTile() {
@@ -62,7 +70,9 @@ class ServiceManualPage extends Page {
   }
 
   get designTileBody() {
-    return $('//a[contains(normalize-space(.),"Design")]/ancestor::div[contains(@class,"defra-tile")]//p')
+    return $(
+      '//a[contains(normalize-space(.),"Design")]/ancestor::div[contains(@class,"defra-tile")]//p'
+    )
   }
 
   get testingAndAssuranceTile() {
@@ -70,7 +80,9 @@ class ServiceManualPage extends Page {
   }
 
   get testingAndAssuranceTileBody() {
-    return $('//a[contains(normalize-space(.),"Quality assurance") or contains(normalize-space(.),"testing")]/ancestor::div[contains(@class,"defra-tile")]//p')
+    return $(
+      '//a[contains(normalize-space(.),"Quality assurance") or contains(normalize-space(.),"testing")]/ancestor::div[contains(@class,"defra-tile")]//p'
+    )
   }
 
   get businessAnalysisTile() {
@@ -78,7 +90,9 @@ class ServiceManualPage extends Page {
   }
 
   get businessAnalysisTileBody() {
-    return $('//a[contains(normalize-space(.),"Business analysis")]/ancestor::div[contains(@class,"defra-tile")]//p')
+    return $(
+      '//a[contains(normalize-space(.),"Business analysis")]/ancestor::div[contains(@class,"defra-tile")]//p'
+    )
   }
 
   get productAndDeliveryTile() {
@@ -86,7 +100,9 @@ class ServiceManualPage extends Page {
   }
 
   get productAndDeliveryTileBody() {
-    return $('//a[contains(normalize-space(.),"Product and delivery")]/ancestor::div[contains(@class,"defra-tile")]//p')
+    return $(
+      '//a[contains(normalize-space(.),"Product and delivery")]/ancestor::div[contains(@class,"defra-tile")]//p'
+    )
   }
 
   get architectureTile() {
@@ -94,7 +110,9 @@ class ServiceManualPage extends Page {
   }
 
   get architectureTileBody() {
-    return $('//a[contains(normalize-space(.),"Architecture")]/ancestor::div[contains(@class,"defra-tile")]//p')
+    return $(
+      '//a[contains(normalize-space(.),"Architecture")]/ancestor::div[contains(@class,"defra-tile")]//p'
+    )
   }
 
   open() {

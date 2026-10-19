@@ -14,7 +14,9 @@ class SearchPage extends Page {
 
   get resultsCount() {
     // Try the specific search results count element first, fall back to any body-l in main
-    return $('main .defra-search-results__count, main .search-results__count, main [data-testid="results-count"], main .govuk-body-l')
+    return $(
+      'main .defra-search-results__count, main .search-results__count, main [data-testid="results-count"], main .govuk-body-l'
+    )
   }
 
   get firstResult() {

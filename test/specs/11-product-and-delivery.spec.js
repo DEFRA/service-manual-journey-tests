@@ -13,7 +13,13 @@ describe('Product And Delivery Verification', () => {
         if (l.level !== 'SEVERE') return false
         const msg = (l.message || '').toString()
         if (/favicon/i.test(msg)) return false
-        if (/Failed to load resource: the server responded with a status of 404/i.test(msg) && /images\//i.test(msg)) return false
+        if (
+          /Failed to load resource: the server responded with a status of 404/i.test(
+            msg
+          ) &&
+          /images\//i.test(msg)
+        )
+          return false
         if (/this-page-does-not-exist-404/i.test(msg)) return false
         return true
       })

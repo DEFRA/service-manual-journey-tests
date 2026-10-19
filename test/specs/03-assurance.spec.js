@@ -14,7 +14,13 @@ describe('Assurance: Spend Control And Readiness', () => {
         if (l.level !== 'SEVERE') return false
         const msg = (l.message || '').toString()
         if (/favicon/i.test(msg)) return false
-        if (/Failed to load resource: the server responded with a status of 404/i.test(msg) && /images\//i.test(msg)) return false
+        if (
+          /Failed to load resource: the server responded with a status of 404/i.test(
+            msg
+          ) &&
+          /images\//i.test(msg)
+        )
+          return false
         if (/this-page-does-not-exist-404/i.test(msg)) return false
         return true
       })
@@ -65,16 +71,28 @@ describe('Assurance: Spend Control And Readiness', () => {
     const subpages = [
       { href: `${base}/spend-control`, heading: /Spend control/i },
       { href: `${base}/service-assessments`, heading: /Service assessments/i },
-      { href: `${base}/operational-service-readiness`, heading: /Operational service readiness/i },
-      { href: `${base}/other-assurance-types`, heading: /Other assurance types/i }
+      {
+        href: `${base}/operational-service-readiness`,
+        heading: /Operational service readiness/i
+      },
+      {
+        href: `${base}/other-assurance-types`,
+        heading: /Other assurance types/i
+      }
     ]
     for (const p of subpages) {
       await browser.url(p.href)
-      const hasH1 = await browser.execute(() => document.querySelector('h1') !== null)
+      const hasH1 = await browser.execute(
+        () => document.querySelector('h1') !== null
+      )
       if (!hasH1) throw new Error(`${p.href} — no <h1> found`)
-      const heading = await browser.execute(() => document.querySelector('h1').textContent)
+      const heading = await browser.execute(
+        () => document.querySelector('h1').textContent
+      )
       if (!p.heading.test(heading)) {
-        throw new Error(`${p.href} — heading "${heading}" did not match ${p.heading}`)
+        throw new Error(
+          `${p.href} — heading "${heading}" did not match ${p.heading}`
+        )
       }
     }
   })
@@ -97,10 +115,14 @@ describe('Assurance: Spend Control And Readiness', () => {
   it('Given I am on the Service Assessments (Assurance) page, when the page loads, then GOV.UK Service Standard and 14-point framework content is shown', async () => {
     await AssuranceServiceAssessmentsPage.open()
     await expect(AssuranceServiceAssessmentsPage.mainHeading).toBeDisplayed()
-    await expect(AssuranceServiceAssessmentsPage.mainHeading).toHaveText(/Service assessments/i)
+    await expect(AssuranceServiceAssessmentsPage.mainHeading).toHaveText(
+      /Service assessments/i
+    )
     const content = await AssuranceServiceAssessmentsPage.pageContent.getText()
     expect(content).toMatch(/assessment|assurance/i)
-    expect(content).toMatch(/GOV\.UK Service Standard|14 points|peer review|transactional/i)
+    expect(content).toMatch(
+      /GOV\.UK Service Standard|14 points|peer review|transactional/i
+    )
   })
 
   // ─── Operational Service Readiness subpage (from 46-operational-service-readiness.spec.js) ─
@@ -109,12 +131,19 @@ describe('Assurance: Spend Control And Readiness', () => {
   it('Given I am on the Operational Service Readiness page, when the page loads, then the pre-live checklist covering support, monitoring, and runbook requirements is shown', async () => {
     await OperationalServiceReadinessPage.open()
     await expect(OperationalServiceReadinessPage.mainHeading).toBeDisplayed()
-    await expect(OperationalServiceReadinessPage.mainHeading).toHaveText(/Operational service readiness/i)
+    await expect(OperationalServiceReadinessPage.mainHeading).toHaveText(
+      /Operational service readiness/i
+    )
     const content = await OperationalServiceReadinessPage.pageContent.getText()
     expect(content).toMatch(/support|monitor|runbook|readiness/i)
-    expect(content).toMatch(/safe and secure|live environment|compliance|integrity/i)
-    const checklistItemsRaw = await OperationalServiceReadinessPage.checklistItems
-    const checklistItems = Array.isArray(checklistItemsRaw) ? checklistItemsRaw : [checklistItemsRaw].filter(Boolean)
+    expect(content).toMatch(
+      /safe and secure|live environment|compliance|integrity/i
+    )
+    const checklistItemsRaw =
+      await OperationalServiceReadinessPage.checklistItems
+    const checklistItems = Array.isArray(checklistItemsRaw)
+      ? checklistItemsRaw
+      : [checklistItemsRaw].filter(Boolean)
     expect(checklistItems.length).toBeGreaterThan(0)
   })
 
