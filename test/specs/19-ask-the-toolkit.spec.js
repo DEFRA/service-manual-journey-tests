@@ -2,9 +2,12 @@ import { browser, expect } from '@wdio/globals'
 
 import AskTheToolkitPage from '../page-objects/ask-the-toolkit.page'
 
-// Ask is switched off in prod until it launches on 26 October 2026, so the
-// page is a 404 there. Remove this guard once it is live.
-const askIsOn = process.env.ENVIRONMENT !== 'prod'
+// Ask is only switched on in dev and test, so the page is a 404 everywhere
+// else. Add an environment here when Ask is switched on there. A local run
+// sets no ENVIRONMENT and tests whatever is on localhost.
+const askEnvironments = ['dev', 'test']
+const environment = process.env.ENVIRONMENT
+const askIsOn = !environment || askEnvironments.includes(environment)
 
 const question = 'How do I report an AI incident?'
 const followUp = 'Who should I contact first?'
